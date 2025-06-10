@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Successful | Blockeste</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #81c784;
+            --primary-dark: #1b5e20;
+            --secondary: #00796b;
+            --dark: #263238;
+            --light: #f5f5f5;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --text: #424242;
+            --text-light: #757575;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f1f8e9;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: var(--primary);
+        }
+        
+        .success-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+            text-align: center;
+        }
+        
+        .success-icon {
+            font-size: 80px;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+        
+        .success-title {
+            font-size: 32px;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+        
+        .success-subtitle {
+            font-size: 18px;
+            color: var(--text);
+            margin-bottom: 30px;
+        }
+        
+        .transaction-details {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            font-weight: 500;
+            text-align: right;
+        }
+        
+        .crypto-value {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-dark);
+        }
+        
+        .qr-code {
+            margin: 20px auto;
+            width: 180px;
+            height: 180px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(46, 125, 50, 0.05);
+        }
+        
+        .agreement-note {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            color: var(--primary-dark);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .success-container {
+                padding: 25px;
+            }
+            
+            .success-title {
+                font-size: 26px;
+            }
+            
+            .success-subtitle {
+                font-size: 16px;
+            }
+            
+            .transaction-details {
+                padding: 15px;
+            }
+            
+            .detail-item {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .detail-value {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <span>Blockeste</span>
+            </div>
+        </header>
+        
+        <div class="success-container">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            
+            <h1 class="success-title">Property Transaction Successful!</h1>
+            <p class="success-subtitle">Your property ownership has been securely recorded on the blockchain</p>
+            
+            <div class="transaction-details">
+                <div class="detail-item">
+                    <span class="detail-label">Transaction Hash:</span>
+                    <span class="detail-value">0x88df016429689c079f3b2f6ad39fa052532c56795b733da78a91ebe6a713944b</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Property Address:</span>
+                    <span class="detail-value">123 Blockchain Street, Decentraland, DN 12345</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Token ID:</span>
+                    <span class="detail-value">BLK-2023-0425</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Purchase Price:</span>
+                    <span class="detail-value">
+                        <span class="crypto-value">
+                            <i class="fab fa-ethereum"></i>
+                            <span>1.75 ETH ($3,150.00)</span>
+                        </span>
+                    </span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Block Number:</span>
+                    <span class="detail-value">17,582,000</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Date & Time:</span>
+                    <span class="detail-value">October 15, 2023 at 14:30:22 UTC</span>
+                </div>
+                
+                <div class="detail-item">
+                    <span class="detail-label">NFT Contract:</span>
+                    <span class="detail-value">0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359</span>
+                </div>
+            </div>
+            
+            <div class="qr-code">
+                <!-- QR code would be generated dynamically in a real implementation -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://etherscan.io/tx/0x88df016429689c079f3b2f6ad39fa052532c56795b733da78a91ebe6a713944b" alt="Transaction QR Code">
+            </div>
+            
+            <p>Scan QR code to view transaction on Etherscan</p>
+            
+            <div class="action-buttons">
+                <!-- <a href="#" class="btn btn-primary">
+                    <i class="fas fa-file-contract"></i>
+                    Download Ownership Agreement
+                </a> -->
+                
+                <a href="https://etherscan.io/tx/0x88df016429689c079f3b2f6ad39fa052532c56795b733da78a91ebe6a713944b" target="_blank" class="btn btn-outline">
+                    <i class="fas fa-external-link-alt"></i>
+                    View on Etherscan
+                </a>
+                
+                <a href="/dashboard" class="btn btn-outline">
+                    <i class="fas fa-home"></i>
+                    Back to Properties
+                </a>
+            </div>
+            
+            <div class="agreement-note">
+                <p><i class="fas fa-envelope"></i> A copy of your ownership agreement has been sent to your email address. The PDF is encrypted with your PAN card number as the password.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

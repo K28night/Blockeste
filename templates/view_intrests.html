@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Interests</title>
+    <!-- <link rel="stylesheet" href="../static/css/view_intrests.css"> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* Dark Mode */
+        body.dark {
+            background-color: #222;
+            color: #f2f2f2;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .theme-toggle {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+        }
+
+        .theme-toggle button {
+            background: #209005;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .theme-toggle button:hover {
+            background: #28ba07;
+        }
+
+        .property-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .property-details {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .property-image img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+        }
+
+        .interests-list {
+            margin-top: 20px;
+        }
+
+        .interest-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .interest-card:hover {
+            transform: scale(1.02);
+        }
+/* Interest Actions - Buttons */
+.interest-actions button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Accept Button */
+.interest-actions .accept-btn {
+    background-color: #28a745; /* Green */
+    color: #fff;
+}
+.property-details strong{
+color:#24840f;
+}
+.interest-card strong{
+    color:#24840f;
+}
+
+.interest-actions .accept-btn:hover {
+    background-color: #218838; /* Darker Green */
+}
+
+/* Reject Button */
+.interest-actions .reject-btn {
+    background-color: #dc3545; /* Red */
+    color: #fff;
+}
+
+.interest-actions .reject-btn:hover {
+    background-color: #c82333; /* Darker Red */
+}
+
+/* Dark Mode - Maintain Same Button Colors */
+body.dark-theme .interest-actions .accept-btn {
+    background-color: #28a745; /* Keep Green */
+    color: #fff;
+}
+
+body.dark-theme .interest-actions .accept-btn:hover {
+    background-color: #218838; /* Keep Darker Green */
+}
+
+body.dark-theme .interest-actions .reject-btn {
+    background-color: #dc3545; /* Keep Red */
+    color: #fff;
+}
+
+body.dark-theme .interest-actions .reject-btn:hover {
+    background-color: #c82333; /* Keep Darker Red */
+}
+
+
+        /* Dark Mode Styles */
+        body.dark .property-section, 
+        body.dark .interest-card {
+            background: #333;
+            color: white;
+            box-shadow: none;
+        }
+        body.dark .property-details strong{
+            color:#28ba07;
+            }
+            body.dark .interest-card strong{
+                color:#28ba07;
+            }
+      
+    </style>
+</head>
+<body>
+
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle">
+        <button id="themeToggle">Switch to Dark Mode</button>
+    </div>
+
+    <div class="container">
+        <div class="property-section">
+            <div class="property-details">
+                {% for prop in propert %}
+                <h2>Property Details</h2>
+                <p><strong>Title:</strong> {{prop.p_name}}</p>
+                <p><strong>Location:</strong> {{prop.p_address}}</p>
+                <p><strong>Seller's Rate:</strong> {{prop.price}} ETH</p>
+                <p><strong>Total Interests:</strong> {{count}}</p>
+                {% endfor %}
+            </div>
+            <div class="property-image">
+                {% for prop in propert %}
+                <img src="{{ prop.p_image }}" alt="Property Image">
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="interests-list">
+            <h2>Interests for Your Property</h2>
+            {% for detail in b_detail %}
+            {% for intrest_item in intrest if intrest_item.buyer_id == detail.user_id %}
+                <div class="interest-card">
+                    <div class="buyer-info">
+                        <div class="buyer-text">
+                            <p><strong>Name:</strong> {{ detail.user_name }}</p>
+                            <p><strong>Email:</strong> {{ detail.email }}</p>
+                            <p><strong>Phone:</strong> +91 {{ detail.phone }}</p>
+                        </div>
+                    </div>
+        
+                    <div class="interest-details">
+                        <p><strong>Proposed Rate:</strong> {{ intrest_item.price }} ETH</p>
+                        <p><strong>Message:</strong> {{ intrest_item.message }}</p>
+                    </div>
+                    <div class="interest-actions">
+                        <button class="accept-btn" onclick="window.location.href='/chat?b_id={{intrest_item.buyer_id}}'">Accept</button>
+                        <button class="reject-btn">Reject</button>
+                        <button class="accept-btn" onclick="window.location.href='/smart_contract?b_id={{intrest_item.in_id}}'">Sell</button>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <script>
+        document.getElementById("themeToggle").addEventListener("click", function() {
+            document.body.classList.toggle("dark");
+            if (document.body.classList.contains("dark")) {
+                this.textContent = "Switch to Light Mode";
+            } else {
+                this.textContent = "Switch to Dark Mode";
+            }
+        });
+    </script>
+
+    <!-- <script src="../static/js/view_intrests.js"></script> -->
+</body>
+</html>

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Price Predictor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #0d47a1;
+            --primary-light: #e8f0fe;
+            --accent: #4285f4;
+            --text: #202124;
+            --text-light: #5f6368;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(32, 33, 36, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        html, body {
+            height: 100%;
+            
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: var(--text);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            padding: 10px;
+            
+        }
+        
+        .prediction-form {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 1200px;
+            animation: fadeIn 0.8s ease-out;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+    
+            height: 100%;
+        }
+        
+        .form-section {
+            padding: 10px;
+            overflow-y: auto;
+            /* Hide scrollbar for Chrome, Safari and Opera */
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+        
+        .form-section::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .form-section::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .form-section::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 20px;
+        }
+        
+        .form-section h3 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-section h3 i {
+            margin-right: 8px;
+            color: var(--accent);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--text);
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+        
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-group i {
+            position: absolute;
+            left: 10px;
+            color: var(--primary);
+            font-size: 14px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 8px 12px 8px 32px;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text);
+            background-color: var(--white);
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        }
+        
+        input::placeholder, select::placeholder {
+            color: #80868b;
+        }
+        
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px top 50%;
+            background-size: 10px auto;
+            padding-right: 30px;
+        }
+        
+        .form-actions {
+            grid-column: span 4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 10px;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 8px rgba(26, 115, 232, 0.3);
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 250px;
+            position: relative;
+            
+        }
+        
+        .btn-submit i {
+            margin-right: 8px;
+        }
+        
+        .btn-submit:hover {
+            box-shadow: 0 6px 12px rgba(26, 115, 232, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(26, 115, 232, 0.3);
+        }
+        
+        .btn-submit:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+        
+        .btn-submit:hover:before {
+            left: 100%;
+        }
+        
+        .result {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 15px;
+            padding: 12px;
+            background-color: var(--primary-light);
+            border-radius: 12px;
+            animation: fadeIn 0.5s ease-out;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .result i {
+            margin-right: 10px;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .input-group:hover label {
+            color: var(--primary);
+        }
+        
+ 
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(-10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .form-group {
+            animation: slideIn 0.4s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .form-group:nth-child(even) { animation-delay: 0.1s; }
+        .form-group:nth-child(odd) { animation-delay: 0.2s; }
+        
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .prediction-form {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .form-actions {
+                grid-column: span 2;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .prediction-form {
+                grid-template-columns: 1fr;
+                overflow-y: auto;
+            }
+            
+            .form-actions {
+                grid-column: span 1;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            html, body {
+                overflow: auto;
+            }
+        }
+        
+        /* Form field hover effects */
+        .input-group {
+            position: relative;
+            z-index: 1;
+        }
+        i{
+           margin-top: 15px;
+
+        }
+        
+        .input-group::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-light);
+            border-radius: 6px;
+            z-index: -1;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.3s ease;
+        }
+        
+        .input-group:hover::after {
+            opacity: 0.5;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+    
+    <br><br><br><br><br><br>
+    
+    <div class="container">
+        <div class="headers">
+            <h1 style="text-align: center;"><i class="fas fa-home"></i> Property Price Predictor</h1>
+            <p style="text-align: center;">Get an accurate estimate for your property's value using our advanced AI algorithm</p>
+        </div>
+        
+        <div class="main-content">
+            <form class="prediction-form" action="" method="post">
+                <div class="form-section">
+                    <h3><i class="fas fa-building"></i> Property Details</h3>
+                    
+                    <div class="form-group">
+                        <label for="size">Size in Square Feet</label>
+                        <div class="input-group">
+                            <i class="fas fa-expand"></i>
+                            <input type="number" id="size" name="Size_in_SqFt" placeholder="e.g. 1500" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="price">Price per Square Foot</label>
+                        <div class="input-group">
+                            <i class="fas fa-tags"></i>
+                            <input type="text" id="price" name="Price_per_SqFt" placeholder="e.g. 0.05" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="year">Year Built</label>
+                        <div class="input-group">
+                            <i class="fas fa-calendar-alt"></i>
+                            <input type="number" id="year" name="Year_Built" placeholder="e.g. 2010" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="floor">Floor Number</label>
+                        <div class="input-group">
+                            <i class="fas fa-layer-group"></i>
+                            <input type="number" id="floor" name="Floor_No" placeholder="e.g. 5" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="total-floors">Total Floors</label>
+                        <div class="input-group">
+                            <i class="fas fa-building"></i>
+                            <input type="number" id="total-floors" name="Total_Floors" placeholder="e.g. 10" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="age">Age of Property (Years)</label>
+                        <div class="input-group">
+                            <i class="fas fa-clock"></i>
+                            <input type="number" id="age" name="Age_of_Property" placeholder="e.g. 12" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> Location & Amenities</h3>
+                    
+                    <div class="form-group">
+                        <label for="schools">Nearby Schools</label>
+                        <div class="input-group">
+                            <i class="fas fa-school"></i>
+                            <input type="number" id="schools" name="Nearby_Schools" placeholder="e.g. 8" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hospitals">Nearby Hospitals</label>
+                        <div class="input-group">
+                            <i class="fas fa-hospital"></i>
+                            <input type="number" id="hospitals" name="Nearby_Hospitals" placeholder="e.g. 4" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <div class="input-group">
+                            <i class="fas fa-flag"></i>
+                            <select id="state" name="State" required>
+                                <option value="" disabled selected>Select State</option>
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Odisha">Odisha</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <div class="input-group">
+                            <i class="fas fa-city"></i>
+                            <input type="text" id="city" name="City" placeholder="e.g. Mumbai" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="locality">Locality</label>
+                        <div class="input-group">
+                            <i class="fas fa-map-pin"></i>
+                            <input type="text" id="locality" name="Locality" placeholder="e.g. Bandra" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3><i class="fas fa-house-user"></i> Property Features</h3>
+                    
+                    <div class="form-group">
+                        <label for="type">Property Type</label>
+                        <div class="input-group">
+                            <i class="fas fa-home"></i>
+                            <select id="type" name="Property_Type" required>
+                                <option value="" disabled selected>Select Property Type</option>
+                                <option value="Apartment">Apartment</option>
+                                <option value="Independent House">Independent House</option>
+                                <option value="Villa">Villa</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="furnished">Furnished Status</label>
+                        <div class="input-group">
+                            <i class="fas fa-couch"></i>
+                            <select id="furnished" name="Furnished_Status" required>
+                                <option value="" disabled selected>Select Furnished Status</option>
+                                <option value="Furnished">Furnished</option>
+                                <option value="Semi-furnished">Semi-furnished</option>
+                                <option value="Unfurnished">Unfurnished</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="facing">Facing</label>
+                        <div class="input-group">
+                            <i class="fas fa-compass"></i>
+                            <select id="facing" name="Facing" required>
+                                <option value="" disabled selected>Select Facing</option>
+                                <option value="East">East</option>
+                                <option value="West">West</option>
+                                <option value="South">South</option>
+                                <option value="North">North</option>
+                            </select>
+                        </div>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="owner-type">Owner Type</label>
+                        <div class="input-group">
+                            <i class="fas fa-user-tie"></i>
+                            <select id="owner-type" name="Owner_Type" required>
+                                <option value="" disabled selected>Select Owner Type</option>
+                                <option value="Owner">Owner</option>
+                                <option value="Builder">Builder</option>
+                                <option value="Broker">Broker</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="availability">Availability Status</label>
+                        <div class="input-group">
+                            <i class="fas fa-key"></i>
+                            <select id="availability" name="Availability_Status" required>
+                                <option value="" disabled selected>Select Availability Status</option>
+                                <option value="Ready_to_Move">Ready to Move</option>
+                                <option value="Under_Construction">Under Construction</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3><i class="fas fa-plus-circle"></i> Additional Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="transport">Public Transport Accessibility</label>
+                        <div class="input-group">
+                            <i class="fas fa-bus"></i>
+                            <select id="transport" name="Public_Transport_Accessibility" required>
+                                <option value="" disabled selected>Select Accessibility Level</option>
+                                <option value="High">High</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="parking">Parking Space</label>
+                        <div class="input-group">
+                            <i class="fas fa-car"></i>
+                            <select id="parking" name="Parking_Space" required>
+                                <option value="" disabled selected>Select Option</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="security">Security</label>
+                        <div class="input-group">
+                            <i class="fas fa-shield-alt"></i>
+                            <select id="security" name="Security" required>
+                                <option value="" disabled selected>Select Option</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    {% if result %}
+                    <div class="result">
+                        <i class="fas fa-chart-line"></i> {{ result }}
+                    </div>
+                    {%else%}
+                    <div class="result">
+                        <i class="fas fa-chart-line"></i> {{ result }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" name="submit" class="btn-submit" onclick="windows.location.href='/predict'">
+                         Predict Property Price 
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+   
+    
+    <script>
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Add input focus animations
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('focused');
+                input.parentElement.querySelector('i').style.color = '#1a73e8';
+            });
+            
+            input.addEventListener('blur', () => {
+                input.parentElement.classList.remove('focused');
+                input.parentElement.querySelector('i').style.color = '';
+            });
+            
+            // Add hover effect for icons
+            input.parentElement.addEventListener('mouseenter', () => {
+                input.parentElement.querySelector('i').style.transform = 'scale(1.2)';
+                input.parentElement.querySelector('i').style.transition = 'all 0.3s ease';
+            });
+            
+            input.parentElement.addEventListener('mouseleave', () => {
+                input.parentElement.querySelector('i').style.transform = 'scale(1)';
+            });
+        });
+        
+        // Form validation feedback
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (e) => {
+            const requiredFields = form.querySelectorAll('[required]');
+            let valid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value) {
+                    valid = false;
+                    field.classList.add('invalid');
+                    
+                    // Add shake animation
+                    field.style.animation = 'shake 0.5s ease-in-out';
+                    setTimeout(() => {
+                        field.style.animation = '';
+                    }, 500);
+                } else {
+                    field.classList.remove('invalid');
+                }
+            });
+            
+            if (!valid) {
+                e.preventDefault();
+            } else {
+                // Add loading state to button when form is valid
+                const button = form.querySelector('.btn-submit');
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...';
+                button.disabled = true;
+            }
+        });
+        
+        // Add keyframe for shake animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+         // Handle form submission
+         document.getElementById("prediction-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch("/predict", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: new URLSearchParams(data).toString(),
+                });
+
+                const result = await response.json();
+                if (result.predicted_price) {
+                    document.getElementById("predicted-price").textContent = `$${result.predicted_price.toFixed(2)}`;
+                } else {
+                    document.getElementById("predicted-price").textContent = "Error: Unable to predict.";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById("predicted-price").textContent = "Error: Unable to predict.";
+            }
+        });
+    </script>
+</body>
+</html>

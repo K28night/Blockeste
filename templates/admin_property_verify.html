@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC Approval</title>
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            padding: 20px;
+            color: #444;
+        }
+        .container {
+            width: 120%;
+            max-width: 1232px;
+            margin: auto;
+            overflow-x: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: white;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #28a745;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .action-btn {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .approve-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .reject-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .action-btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+        .property-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+        .property-image:hover {
+            transform: scale(1.1);
+        }
+        @media (max-width: 768px) {
+            th, td {
+                padding: 10px;
+                font-size: 12px;
+            }
+            .property-image {
+                width: 60px;
+                height: 60px;
+            }
+            .action-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            .container {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>KYC Approval</h1>
+
+    <div class="container">
+        <table>
+            <tr>
+                <th>Sl.No</th>
+                <th>Property Name</th>
+                <th>Address</th>
+                <th>Seller Name</th>
+                <th>PAN Number</th>
+                <th>PAN Image</th>
+                <th>Property Image</th>
+                <th>Sale Deed</th>
+                <th>Tax Receipt</th>
+                <th>Encumbrance Certificate</th>
+                <th>Building Plan</th>
+                <th>Action</th>
+            </tr>
+            
+            {% for plot in property_detail %}
+            {% for sell in seller %}
+            {% if sell.user_id == plot.s_id %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ plot.p_name }}</td>
+                <td>{{ plot.address }}</td>
+                <td>{{ sell.full_name }}</td>
+                <td>{{ sell.gov_id_number }}</td>
+                <td><img src="{{ sell.id_document_path }}" alt="PAN Card" class="property-image"></td>
+                <td><img src="{{ plot.p_image }}" alt="Property Image" class="property-image"></td>
+                <td>
+                    {% if plot.sale_deed.endswith('.pdf') %}
+                        <a href="{{ plot.sale_deed }}" target="_blank" class="pdf-link">View Sale Deed</a>
+                    {% else %}
+                        <img src="{{ plot.sale_deed }}" alt="Sale Deed" class="property-image">
+                    {% endif %}
+                </td>
+                
+                <td>
+                    {% if plot.tax_receipts.endswith('.pdf') %}
+                        <a href="{{ plot.tax_receipts }}" target="_blank" class="pdf-link">View Tax Receipts</a>
+                    {% else %}
+                        <img src="{{ plot.tax_receipts }}" alt="Tax Receipts" class="property-image">
+                    {% endif %}
+                </td>
+                
+                <td>
+                    {% if plot.em_certificate.endswith('.pdf') %}
+                        <a href="{{ plot.em_certificate }}" target="_blank" class="pdf-link">View Encumbrance Certificate</a>
+                    {% else %}
+                        <img src="{{ plot.em_certificate }}" alt="Encumbrance Certificate" class="property-image">
+                    {% endif %}
+                </td>
+                
+                <td>
+                    {% if plot.build_plan.endswith('.pdf') %}
+                        <a href="{{ plot.build_plan }}" target="_blank" class="pdf-link">View Building Plan</a>
+                    {% else %}
+                        <img src="{{ plot.build_plan }}" alt="Building Plan" class="property-image">
+                    {% endif %}
+                </td>
+                <td>
+                    <button class="action-btn approve-btn" 
+                        onclick="window.location.href='/admin_property_verify?a_id={{ plot.p_id }}'">
+                        Approve
+                    </button>
+                    <button class="action-btn reject-btn" 
+                        onclick="window.location.href='/admin_property_verify?r_id={{ plot.p_id }}'">
+                        Reject
+                    </button>
+                </td>
+            </tr>
+            {% endif %}
+            {%else%}
+            <tr>
+                <td colspan="12">No Properties Found</td>
+                </tr>
+            {% endfor %}
+            {%else%}
+            <tr>
+                <td colspan="12">No Properties Found</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>
+</html>

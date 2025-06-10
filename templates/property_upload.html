@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Property - Multi-Step Form</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styling */
+        .header {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-buttons button {
+            background-color: #45a049; /* Darker Green */
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .header-buttons button:hover {
+            background-color: #388e3c; /* Even Darker Green */
+        }
+
+        /* Form Container Styling */
+        .form-container {
+            max-width: 950px; /* Increased width for better layout */
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-container h3 {
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input[type="file"] {
+            padding: 5px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .form-navigation button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .form-navigation button#prevBtn {
+            background-color: #f44336; /* Red */
+            color: white;
+        }
+
+        .form-navigation button#prevBtn:hover {
+            background-color: #d32f2f; /* Darker Red */
+        }
+
+        .form-navigation button#nextBtn {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+
+        .form-navigation button#nextBtn:hover {
+            background-color: #45a049; /* Darker Green */
+        }
+
+        .form-navigation button#submitBtn {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            display: none;
+        }
+
+        .form-navigation button#submitBtn:hover {
+            background-color: #45a049; /* Darker Green */
+        }
+
+        .step-description {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .input-description {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        /* Step Indicator */
+        .step-indicator {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #4CAF50; /* Green */
+        }
+
+        .step-indicator .step-number {
+            color: #4CAF50; /* Green */
+        }
+
+        .step-indicator .step-number.active {
+            color: #45a049; /* Darker Green */
+        }
+
+        /* Link to Second Form */
+        .access-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .access-link a {
+            color: #4CAF50; /* Green */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .access-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Layout */
+        @media (min-width: 768px) {
+            .form-row {
+                display: flex;
+                gap: 20px;
+            }
+
+            .form-row .form-group {
+                flex: 1;
+            }
+        }
+        .success{
+            color: #4CAF50;
+        }
+        .danger{
+            color: #FF0000;
+        }
+        /* Validation Error Styling */
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Property Registration</h1>
+        <div class="header-buttons">
+            <button onclick="window.location.href='/dashboard'">Profile</button>
+            <button onclick="window.location.href='/logout'">Logout</button>
+        </div>
+    </div>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <h2>Add Property for Sale</h2>
+
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <span class="step-number active">Step 1</span> ---- <span class="step-number">Step 2</span>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+        <div class="step-description">
+            <p>This form has <strong>two steps</strong>:</p>
+            <ol>
+                <li><strong>Step 1:</strong> Provide property and seller details.</li>
+                <li><strong>Step 2:</strong> Upload required documents.</li>
+            </ol>
+        </div>
+
+        <form action="/upload" method="POST" enctype="multipart/form-data" >
+            
+            <!-- Step 1: Property and Seller Details -->
+            <div class="step active" id="step1">
+                <h3>Step 1: Property and Seller Details</h3>
+
+                <!-- Row 1: Property Type and Address -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">Property Name</label>
+                        <input type="text" id="propertyName" name="propertyName" required>
+                        <div class="input-description">Enter the name of property like villge house...</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="propertyType">Property Type</label>
+                        <select id="propertyType" name="propertyType" required>
+                            <option value="">Select Property Type</option>
+                            <option value="Residential">Residential</option>
+                            <option value="Commercial">Commercial</option>
+                            <option value="Plot">Plot</option>
+                        </select>
+                        <div class="input-description">Select the type of property you are selling (Residential, Commercial, or Plot).</div>
+                    </div>
+                   
+                    </div>
+                    <div class="form-row">
+                    <div class="form-group">
+                        <label for="propertyAddress">Property Address</label>
+                        <textarea id="propertyAddress" name="propertyAddress" required></textarea>
+                        <div class="input-description">Enter the complete address of the property, including landmarks.</div>
+                    </div>
+                </div>
+
+                <!-- Row 2: State and District -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <select id="state" name="state" required onchange="loadDistricts()">
+                            <option value="">Select State</option>
+                            <!-- States will be populated dynamically -->
+                        </select>
+                        <div class="input-description">Select the state where the property is located.</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="district">District</label>
+                        <select id="district" name="district" required>
+                            <option value="">Select District</option>
+                            <!-- Districts will be populated dynamically based on the selected state -->
+                        </select>
+                        <div class="input-description">Select the district where the property is located.</div>
+                    </div>
+
+                </div>
+
+                <!-- Row 3: City and Pincode -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city" required>
+                        <div class="input-description">Enter the city where the property is located.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pincode">Pincode</label>
+                        <input type="text" id="pincode" name="pincode" required pattern="\d{6}" title="Pincode must be 6 digits">
+                        <div class="input-description">Enter the pincode of the property's location.</div>
+                    </div>
+                </div>
+
+                <!-- Row 4: Price and Area -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="price">Price (in ETH)</label>
+                        <input type="number" id="price" name="price" required>
+                        <div class="input-description">Enter the selling price of the property in Indian Rupees (INR).</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area">Area (in sq. ft.)</label>
+                        <input type="number" id="area" name="area" required>
+                        <div class="input-description">Enter the total area of the property in square feet.</div>
+                    </div>
+                </div>
+
+                <!-- Row 5: Description -->
+                <div class="form-group">
+                    <label for="description">Property Description</label>
+                    <textarea id="description" name="description"></textarea>
+                    <div class="input-description">Provide a brief description of the property (e.g., features, amenities).</div>
+                </div>
+
+                <!-- Row 6: Seller Details -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sellerName">Seller Name</label>
+                        <input type="text" id="sellerName" name="sellerName" value="{{u_details[0]['user_name']}}" required>
+                        <div class="input-description">Enter the full name of the property seller.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sellerEmail">Seller Email</label>
+                        <input type="email" id="sellerEmail" name="sellerEmail" value="{{u_details[0]['email']}}" required>
+                        <div class="input-description">Enter the email address of the seller for communication.</div>
+                    </div>
+                </div>
+
+                <!-- Row 7: Seller Phone -->
+                <div class="form-group">
+                    <label for="sellerPhone">Seller Phone</label>
+                    <input type="tel" id="sellerPhone" name="sellerPhone" required pattern="[0-9]{10}" value="{{u_details[0]['phone']}}" title="Phone number must be 10 digits">
+                    <div class="input-description">Enter the phone number of the seller for communication.</div>
+                </div>
+            </div>
+
+            <!-- Step 2: Document Uploads -->
+            <div class="step" id="step2">
+                <h3>Step 2: Document Uploads</h3>
+                <div class="form-group">
+                    <label for="saleDeed">Upload Sale Deed (PDF/Image)</label>
+                    <input type="file" id="saleDeed" name="saleDeed" accept=".pdf,.jpg,.png" required>
+                    <div class="input-description">Upload the sale deed of the property in PDF or image format.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="taxReceipts">Upload Property Tax Receipts (PDF/Image)</label>
+                    <input type="file" id="taxReceipts" name="taxReceipts" accept=".pdf,.jpg,.png" required>
+                    <div class="input-description">Upload the latest property tax receipts in PDF or image format.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="encumbranceCertificate">Upload Encumbrance Certificate (PDF/Image)</label>
+                    <input type="file" id="encumbranceCertificate" name="encumbranceCertificate" accept=".pdf,.jpg,.png" required>
+                    <div class="input-description">Upload the encumbrance certificate to prove the property is free from legal disputes.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="approvalPlans">Upload Approved Building Plans (PDF/Image)</label>
+                    <input type="file" id="approvalPlans" name="approvalPlans" accept=".pdf,.jpg,.png">
+                    <div class="input-description">Upload the approved building plans (if applicable).</div>
+                </div>
+                <div class="form-group">
+                    <label for="propertyImage">Property Image</label>
+                    <input type="file" id="propertyImage" name="propertyImage" accept="image/*" required>
+                    <div class="input-description">Upload the property Image.</div>
+                </div>
+            </div>
+
+            <!-- Form Navigation -->
+            <div class="form-navigation">
+                <button type="button" id="prevBtn" onclick="prevStep()" disabled>Previous</button>
+                <button type="button" id="nextBtn" onclick="nextStep()">Next</button>
+                <button type="submit" name="submit" id="submitBtn" onclick="validateForm()">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // State and District Data
+        const stateDistrictData = {
+            "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik"],  
+            "Kerala": ["Thiruvananthapuram","Kollam","Alappuzha","Pathanamthitta","Kottayam","Idukki","Ernakulam","Thrissur","Palakkad","Malappuram","Kozhikode","Wayanad","Kannur","Kasaragod"],
+            "Karnataka": ["Bangalore", "Mysore", "Hubli", "Mangalore"],
+            "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli"],
+            "Uttar Pradesh": ["Lucknow", "Kanpur", "Agra", "Varanasi"],
+            "Delhi": ["New Delhi", "Central Delhi", "East Delhi", "North Delhi"]
+        };
+
+        // Populate State Dropdown
+        const stateDropdown = document.getElementById("state");
+        for (const state in stateDistrictData) {
+            const option = document.createElement("option");
+            option.value = state;
+            option.textContent = state;
+            stateDropdown.appendChild(option);
+        }
+
+        // Load Districts Based on Selected State
+        function loadDistricts() {
+            const districtDropdown = document.getElementById("district");
+            const selectedState = stateDropdown.value;
+
+            // Clear previous districts
+            districtDropdown.innerHTML = '<option value="">Select District</option>';
+
+            if (selectedState) {
+                const districts = stateDistrictData[selectedState];
+                districts.forEach(district => {
+                    const option = document.createElement("option");
+                    option.value = district;
+                    option.textContent = district;
+                    districtDropdown.appendChild(option);
+                });
+            }
+        }
+
+        // Multi-Step Form Logic
+        let currentStep = 1;
+
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach((stepElement) => {
+                stepElement.classList.remove('active');
+            });
+            document.getElementById(`step${step}`).classList.add('active');
+
+            // Update step indicator
+            const stepNumbers = document.querySelectorAll('.step-number');
+            stepNumbers.forEach((stepNumber, index) => {
+                if (index + 1 === step) {
+                    stepNumber.classList.add('active');
+                } else {
+                    stepNumber.classList.remove('active');
+                }
+            });
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = step === 1;
+            document.getElementById('nextBtn').style.display = step === 2 ? 'none' : 'inline-block';
+            document.getElementById('submitBtn').style.display = step === 2 ? 'inline-block' : 'none';
+        }
+
+        function nextStep() {
+            if (currentStep < 2) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        // Form Validation
+        function validateForm() {
+            const sellerEmail = document.getElementById("sellerEmail").value;
+            const sellerPhone = document.getElementById("sellerPhone").value;
+
+            // Email Validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(sellerEmail)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+            // Phone Number Validation
+            const phonePattern = /^\d{10}$/;
+            if (!phonePattern.test(sellerPhone)) {
+                alert("Please enter a valid 10-digit phone number.");
+                return false;
+            }
+
+            return true;
+        }
+
+        // Initialize the form
+        showStep(currentStep);
+    </script>
+</body>
+</html>

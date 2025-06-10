@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC Pending List</title>
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .property-card {
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: 0.3s;
+            background-color: white;
+        }
+        .property-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .watchlist-icon {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .property-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align: center;">{{message}}KYC Pending List</h1>
+
+    <table>
+        <tr>
+            <th>Sl.No</th>
+            <th>User Name</th>
+            <th>Address</th>
+            <th>DOB</th>
+            <th>PAN Number</th>
+            <th>PAN Image</th>
+            <th>Signature</th>
+            <th>Action</th>
+        </tr>
+        
+        {% for plot in kyc_detail %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ plot.full_name }}</td>
+            <td>{{ plot.address }}</td>
+            <td>{{ plot.dob }}</td>
+            <td>{{ plot.gov_id_number }}</td>
+            <td><img src="{{ plot.id_document_path }}" alt="pan card Image" class="property-image"></td>
+             <td><img id="sig-image" src="{{plot.signature_path}}" alt="Your signature will go here!">
+             </td>
+           <!-- button for verify the kyc -->
+            <td>
+                <button class="watchlist-icon" type="submit" 
+                onclick="window.location.href='/admin_kyc_verify?id={{ plot.kyc_id }}'">Aprove KYC</button>
+                </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>

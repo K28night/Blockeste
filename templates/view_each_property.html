@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/view_each_property.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-white shadow-lg">
+        <div class="container mx-auto p-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-green-600">Property Listings{{session['id']}}</h1>
+            <button id="toggleFilters" onclick="window.location.href='/view_property'" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">Back</button>
+            <button id="themeToggle" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 ">Dark Mode</button>
+        </div>
+    </header>
+
+    <!-- Overlay for mobile -->
+    <div id="overlay" class="fixed inset-0 z-40 bg-black bg-opacity-50 hidden"></div>
+
+    {% for each in each_one %}
+    <div class="property-container">
+        <!-- Top Section: Property Image and Details -->
+        <div class="top-section">
+            <!-- Property Image -->
+            <div class="property-image">
+                <img src="{{ each.p_image }}" alt="Property Image">
+            </div>
+
+            <!-- Property Details -->
+            <div class="property-details">
+                <h1>{{ each.p_name }}</h1>
+                <p><strong>Location:</strong> {{ each.p_address }}, {{ each.state }}, {{ each.district }}, {{ each.city }}</p>
+                <p><strong>Seller's Rate:</strong>  {{ each.price }} ETH</p>
+                <p><strong>Area:</strong> {{ each.area }} sft</p>
+                <p><strong>Description:</strong> {{ each.p_description }}</p>
+                <p><strong>Type:</strong> {{ each.p_type }}</p>
+                <p><strong>Total Interests:</strong> <span id="totalInterests">{{count[0]['count']}}</span></p>
+            
+            </div>
+        </div>
+
+        <!-- Bottom Section: Message Form and Seller Details -->
+        <div class="bottom-section">
+            <!-- Request Form -->
+            <div class="request-form">
+                <h2>Make a Request</h2>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <p class="{{ category }}">{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <form method="GET" id="requestForm" action="/view_each_property">
+                    <label for="userRate">Your Proposed Rate:</label>
+                    <input type="number" id="userRate" name="userRate" placeholder="Enter your rate" required>
+
+                    <label for="message">Message to Seller:</label>
+                    <textarea id="message" name="message" placeholder="Write your message..." rows="4" required></textarea>
+
+                    {% if 'status' in session %}
+                        {% if session['status'] == 'verified' %}
+                            <button type="submit">Submit Request</button>
+                        {% endif %}
+                    {% else %}
+                        <button type="submit" disabled>Submit Request</button>
+                    {% endif %}
+                </form>
+            </div>
+
+            <!-- Seller Details -->
+            <div class="seller-details">
+                <h2>Seller Information</h2>
+                <div class="seller-info">
+                    <img src="seller.jpg" alt="Seller Image" class="seller-image">
+                    <div class="seller-text">
+                        {% for seller in seller %}
+                            <p><strong>Name:</strong> {{ seller.user_name }}</p>
+                            <p><strong>Email:</strong> {{ seller.email }}</p>
+                            <p><strong>Phone:</strong> +91 {{ seller.phone }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <script src="../static/js/view_each_property.js"></script>
+</body>
+</html>

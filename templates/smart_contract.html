@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Transfer Agreement</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px; /* Wider container for laptops */
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #209005;
+            margin-bottom: 20px;
+            font-size: 2rem; /* Larger font for laptops */
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1rem; /* Larger font for laptops */
+        }
+
+        input, textarea {
+            padding: 15px;
+            border: 1px solid #28ba07;
+            border-radius: 5px;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+            transition: 0.3s ease-in-out;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #209005;
+            outline: none;
+            box-shadow: 0 0 5px rgba(32, 144, 5, 0.5);
+        }
+
+        .terms-box {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 1rem; /* Larger font for laptops */
+            line-height: 1.6;
+        }
+
+        .terms-box ul {
+            padding-left: 25px;
+        }
+
+        button {
+            background-color: #28ba07;
+            color: white;
+            padding: 15px;
+            border: none;
+            width: 100%;
+            font-size: 1.1rem; /* Larger font for laptops */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        button:hover {
+            background-color: #209005;
+        }
+
+        /* Responsive Design for Mobile */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px;
+                max-width: 100%; /* Full width for mobile */
+            }
+
+            h2 {
+                font-size: 1.5rem; /* Smaller font for mobile */
+            }
+
+            label {
+                font-size: 1rem; /* Smaller font for mobile */
+            }
+
+            input, textarea {
+                padding: 12px;
+                font-size: 0.9rem; /* Smaller font for mobile */
+            }
+
+            .terms-box {
+                font-size: 0.9rem; /* Smaller font for mobile */
+                padding: 15px;
+            }
+
+            button {
+                font-size: 1rem; /* Smaller font for mobile */
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Property Transfer Agreement</h2>
+    <form id="agreementForm">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+        <div class="form-group">
+            <label>Property ID:</label>
+            <input type="text" id="propertyId" name="propertyId" value="{{intrest[0]['p_id'] if intrest else ''}}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Seller Name:</label>
+            <input type="text" id="sellerName" name="seller_name" value="{{seller[0]['full_name'] if seller else ''}}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Buyer Name:</label>
+            <input type="text" id="buyerName" name="buyer_name" value="{{buyer[0]['full_name'] if buyer else ''}}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Property Location:</label>
+            <input type="text" id="propertyLocation" name="property_loc"
+            value="{{property[0]['p_address'] if property else ''}}, {{property[0]['city'] if property else ''}}, {{property[0]['district'] if property else ''}}, {{property[0]['state'] if property else ''}}" 
+            required>
+     
+        </div>
+
+        <div class="form-group">
+            <label>Sale Price (ETH):</label>
+            <input type="text" id="salePrice" name="price" 
+            value="{{ intrest[0]['price'] if intrest else '' }}" required>
+     
+        </div>
+
+        <div class="form-group">
+            <label>Agreement Terms:</label>
+            <textarea id="agreementText" name="agreement" rows="4" required>
+This agreement is made between the seller and the buyer. The seller agrees to transfer the property to the buyer upon successful payment.
+            </textarea>
+        </div>
+
+        <div class="terms-box">
+            <p><strong>Terms & Conditions:</strong></p>
+            <ul>
+                <li>The buyer agrees to transfer the agreed digital currency (ETH).</li>
+                <li>Ownership transfer is completed upon successful payment.</li>
+                <li>The transaction is recorded on the blockchain for transparency.</li>
+                <li>If the transaction failed the ownership will not changed.</li>
+            </ul>
+            <input type="checkbox" id="termsCheckbox"> I agree to the Terms & Conditions
+        </div>
+
+        <button type="submit" id="submitButton" disabled>Submit Agreement</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Debugging: Check if the checkbox and button exist
+        const checkbox = document.getElementById("termsCheckbox");
+        const submitButton = document.getElementById("submitButton");
+
+        if (!checkbox || !submitButton) {
+            console.error("Checkbox or Submit Button not found!");
+            return;
+        }
+
+        // Enable submit button when terms are accepted
+        checkbox.addEventListener("change", function () {
+            console.log("Checkbox state:", this.checked); // Debugging line
+            submitButton.disabled = !this.checked;
+        });
+        const container = document.querySelector(".container");
+        // Handle form submission
+       if(document.querySelector('.sucess')){
+        container.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+            <svg width="100" height="100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="#209005" stroke-width="2" fill="none"/>
+                <path d="M6 12l4 4 8-8" stroke="#209005" stroke-width="2" fill="none"/>
+            </svg>
+            <h2 style="color: #209005;">Transaction Successful!</h2>
+            <p>Your property transfer request has been submitted successfully.</p>
+            <button onclick="window.location.href='/dashboard'">Back</button>
+        </div>
+    `;
+       }
+    });
+    
+</script>
+
+</body>
+</html>

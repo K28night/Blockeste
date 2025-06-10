@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Admin Dashboard</title>
+    <link rel="stylesheet" href="../static/css/admin.css">
+</head>
+<body>
+    <div class="admin-dashboard">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">Real Estate Admin</div>
+            <div class="header-right">
+                <div class="notifications">🔔</div>
+                <div class="profile-dropdown">
+                    <span>Admin</span>
+                    <div class="dropdown-content">
+                        <a href="#">Profile</a>
+                        <a href="#">Settings</a>
+                        <a href="#">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul>
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="#">Properties</a></li>
+                <li><a href="#">Users</a></li>
+                <li><a href="#">Transactions</a></li>
+                <li><a href="#">Reports</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <h1>Dashboard Overview</h1>
+
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <h2>Total Properties</h2>
+                    <p>150</p>
+                </div>
+                <div class="stat-card">
+                    <h2>Total Users</h2>
+                    <p>500</p>
+                </div>
+                <div class="stat-card">
+                    <h2>Total Transactions</h2>
+                    <p>75</p>
+                </div>
+                <div class="stat-card">
+                    <h2>Revenue</h2>
+                    <p>$1,250,000</p>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <h2>Recent Activity</h2>
+                <ul>
+                    <li>Property "Luxury Villa" listed by John Doe.</li>
+                    <li>User "Jane Smith" signed up as a Buyer.</li>
+                    <li>Transaction completed for Property ID #123.</li>
+                </ul>
+            </div>
+
+            <!-- Charts/Graphs -->
+            <div class="charts">
+                <h2>Property Listings Over Time</h2>
+                <canvas id="propertyChart"></canvas>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript for Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../static/js/admin.js"></script>
+</body>
+</html>

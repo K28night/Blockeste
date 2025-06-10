@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- For analytics chart -->
+    <style>
+        .selected-nav-item {
+            background-color: #059669; /* A darker shade of green */
+        }
+        .content-section h2{
+            color:white;
+        }
+        .interests-list {
+            margin-top: 20px;
+        }
+
+        .interest-card {
+            background: #333;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .interest-card:hover {
+            transform: scale(1.02);
+        }
+/* Interest Actions - Buttons */
+.interest-actions button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Accept Button */
+.interest-actions .accept-btn {
+    background-color: #28a745; /* Green */
+    color: #fff;
+}
+/* Reject Button */
+.interest-actions .reject-btn {
+    background-color: #dc3545; /* Red */
+    color: #fff;
+}
+
+.interest-actions .reject-btn:hover {
+    background-color: #c82333; /* Darker Red */
+}
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            showSection('dashboard'); // Show Dashboard by default
+        });
+        // JavaScript to toggle sections
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            // Show the selected section
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        // JavaScript to toggle sidebar visibility
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('md:translate-x-0');
+        }
+
+        // JavaScript to toggle dark mode
+        function toggleDarkMode() {
+            const body = document.body;
+            body.classList.toggle('dark');
+            localStorage.setItem('darkMode', body.classList.contains('dark'));
+        }
+
+        // Check dark mode preference on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark');
+            }
+        });
+
+        // KYC Verification Function
+        function kyc_verify() {
+            alert('KYC verification process initiated. Please upload your documents.');
+            // Add your KYC verification logic here
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans dark:bg-gray-900 transition-colors duration-300">
+    <div class="flex flex-col md:flex-row h-screen">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="w-64 bg-green-600 text-white p-6 flex flex-col space-y-6 fixed md:relative transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-50 dark:bg-gray-800">
+            <!-- Close Button for Mobile -->
+            <button onclick="toggleSidebar()" class="md:hidden absolute top-2 right-2 text-white">
+                ✕
+            </button>
+            <h2 class="text-xl font-bold">Blockeste</h2>
+            <nav>
+                <ul class="space-y-4">
+                    <li><a href="#" onclick="showSection('dashboard')" class="block p-2 hover:bg-green-700 rounded transition">Dashboard</a></li>
+                    <li><a href="#" onclick="window.location.href='/view_property'" class="block p-2 hover:bg-green-700 rounded transition">Properties</a></li>
+                    <li><a href="#" onclick="showSection('watchlist')" class="block p-2 hover:bg-green-700 rounded transition">Watchlist</a></li>
+                    <li><a href="#" onclick="showSection('holdings')" class="block p-2 hover:bg-green-700 rounded transition">Holdings</a></li>
+                    <li><a href="#" onclick="showSection('order')" class="block p-2 hover:bg-green-700 rounded transition">Orders</a></li>
+                    <li><a href="#" onclick="showSection('wallet')" class="block p-2 hover:bg-green-700 rounded transition">Wallet</a></li>
+                    <li><a href="#" onclick="showSection('Intrests')" class="block p-2 hover:bg-green-700 rounded transition">Intrests</a></li>
+                    <li><a href="#" onclick="showSection('settings')" class="block p-2 hover:bg-green-700 rounded transition">Settings</a></li>
+                </ul>
+            </nav>
+            <button onclick="toggleDarkMode()" class="bg-gray-700 p-2 rounded-lg hover:bg-gray-600 transition">
+                Toggle Dark Mode
+            </button>
+        </aside>
+        <!-- Main Content -->
+        <div class="flex-1 p-4 md:p-6 overflow-y-auto">
+            <!-- Top Navigation -->
+            <div class="flex flex-col md:flex-row justify-between items-center bg-white p-4 shadow-lg rounded-lg dark:bg-gray-800 dark:text-white">
+                <!-- Sidebar Toggle Button for Mobile -->
+                <button onclick="toggleSidebar()" class="md:hidden bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                    ☰
+                </button>
+                <h1 class="text-2xl font-bold text-green-600 dark:text-green-400 mb-4 md:mb-0">Welcome, {{session['username']}}</h1>
+                <div class="relative w-full md:w-1/3 mb-4 md:mb-0">
+                    <input type="text" placeholder="Search properties..." class="border p-2 pl-10 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600">
+                    <span class="absolute left-3 top-2 text-gray-400">🔍</span>
+                </div>
+                <div class="flex gap-4 items-center">
+                    <!-- Notifications Dropdown -->
+                    <div class="relative">
+                        <button id="notifications" class="relative bg-gray-200 p-2 rounded-full hover:bg-gray-300 transition dark:bg-gray-700 dark:hover:bg-gray-600">
+                            🔔
+                            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1">3</span>
+                        </button>
+                        <div id="notificationsDropdown" class="hidden absolute right-0 mt-2 w-64 bg-white shadow-lg rounded-lg p-4 dark:bg-gray-700">
+                            <h3 class="font-bold mb-2">Notifications</h3>
+                            <ul class="space-y-2">
+                                <li class="text-sm">New property listed nearby.</li>
+                                <li class="text-sm">Your KYC has been verified.</li>
+                                <li class="text-sm">Rent payment received.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button id="profileToggle" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition dark:bg-green-700 dark:hover:bg-green-600">Profile</button>
+                    <button id="logoutButton" onclick="window.location.href='/logout'" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition dark:bg-red-700 dark:hover:bg-red-600">Logout</button>
+                </div>
+            </div>
+
+            <!-- Dashboard Section (Default) -->
+            <div id="dashboard" class="content-section">
+                {% if 'status' in session and session['status'] == "verified" %}
+                    <h2 class="text-2xl font-bold mb-4">Dashboard Overview</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <!-- Total Properties -->
+                        <div class="bg-white p-6 shadow-lg rounded-lg text-center hover:shadow-xl transition dark:bg-gray-800 dark:text-white">
+                            <h3 class="font-bold text-lg mb-2">Total Properties</h3>
+                            <p class="text-green-600 font-bold text-xl dark:text-green-400">{{ count_self[0]['count(*)'] }}</p>
+                        </div>
+                        <!-- Total Investments -->
+                        <div class="bg-white p-6 shadow-lg rounded-lg text-center hover:shadow-xl transition dark:bg-gray-800 dark:text-white">
+                            <h3 class="font-bold text-lg mb-2">Total Investments</h3>
+                            <p class="text-green-600 font-bold text-xl dark:text-green-400">23 ETH</p>
+                        </div>
+                        <!-- ROI -->
+                        <div class="bg-white p-6 shadow-lg rounded-lg text-center hover:shadow-xl transition dark:bg-gray-800 dark:text-white">
+                            <h3 class="font-bold text-lg mb-2">ROI</h3>
+                            <p class="text-green-600 font-bold text-xl dark:text-green-400">12.5%</p>
+                        </div>
+                        <div class="bg-white p-6 shadow-lg rounded-lg text-center hover:shadow-xl transition dark:bg-gray-800 dark:text-white">
+                            <h3 class="font-bold text-lg mb-2">Add Your Proeprty for sale</h3>
+                           <button type="button" class="btn btn-outline-primary" onclick="window.location.href='/upload'">Add</button>
+                        </div>
+                    </div>
+            
+                {% elif 'status' not in session %}
+                    <div class="bg-white p-6 mt-5 shadow-lg rounded-lg text-center hover:shadow-xl transition dark:bg-gray-800 dark:text-white">
+                        <h3 class="font-bold text-lg mb-2"> Create Demat Account</h3>
+                        <p class="text-green-600 font-bold text-xl dark:text-green-400">Complete KYC</p>
+                        <div class="mt-2">
+                            <button onclick="window.location.href='kyc_verify'" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700">Start KYC</button>
+                        </div>
+                    </div>
+            
+                {% elif session['status'] == "pending" %}
+                    <div class="bg-white p-6 mt-5 shadow-lg rounded-lg text-center hover:shadow-xl transition dark:bg-gray-800 dark:text-white" style="marin-top:2rem">
+                        <h3 class="font-bold text-lg mb-2">Demat Account in Progress</h3>
+                        <p class="text-green-600 font-bold text-xl dark:text-green-400">Come back in 24 hours</p>
+                    </div>
+            
+                {% else %}
+                    <div class="bg-white p-6 mt-5 shadow-lg rounded-lg text-center hover:shadow-xl transition dark:bg-gray-800 dark:text-white">
+                        <h3 class="font-bold text-lg mb-2">{{ session['status'] }}Demat Account Failed</h3>
+                        <p class="text-green-600 font-bold text-xl dark:text-green-400">Your KYC is not verified</p>
+                        <div class="mt-2">
+                            <button onclick="window.location.href='kyc_verify'" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700">Re-Start KYC</button>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            
+           
+
+            <!-- Properties Section -->
+            <div id="properties" class="content-section hidden">
+                <h2 class="text-2xl font-bold mb-4">Properties</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Example Property -->
+                     {%for prop in prop_data%}
+                     {%for count in count_self%}
+                     {%if count.p_id==prop.p_id%}
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700 transition-transform transform hover:scale-105 overflow-hidden">
+                        <img src="{{prop.p_image}}" alt="Property Image" class="w-full h-48 object-cover rounded-lg">
+                        <div class="mt-4">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{prop.p_name}}</h3>
+                            <p class="text-gray-500 dark:text-gray-300 text-sm">{{prop.p_address}}</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <p class="text-green-600 font-bold dark:text-green-400">{{prop.price}} ETH</p>
+                                <p class="text-gray-500 dark:text-gray-300 text-sm">Intrests: {{count}}</p>
+                            </div>
+                            <button onclick="window.location.href='/view_each_property?id={{prop.p_id}}'" class="w-full bg-green-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 transition">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                    {%endif%}
+                    {%endfor%}
+                    {%endfor%}
+                    <!-- Add more properties here -->
+                </div>
+            </div>
+
+            <!-- Watchlist Section -->
+            <div id="watchlist" class="content-section hidden">
+                <h2 class="text-2xl font-bold mb-4">Watchlist</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Example Watchlist Item -->
+                     {%for watch in watch%}
+                     {%for prop in prop_all_data%}
+                     {%if watch.p_id == prop.p_id%}
+                     <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700 transition-transform transform hover:scale-105 overflow-hidden">
+                        <!-- a  watchlist button on top right on imageand div -->
+                         <button onclick="window.location.href='/remove_watchlist_home?w_id={{watch.w_id}}'" class="absolute top-
+                         0 right-0 bg-red-600 text-white px-2 py-1 rounded-lg hover:bg
+                         -red-700 dark:bg-red-700 dark:hover:bg-red-800 transition">
+                         Remove
+                         </button>
+                        <img src="{{prop.p_image}}" alt="Property Image" class="w-full h-48 object-cover rounded-lg">
+                        <div class="mt-4">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{prop.p_name}}</h3>
+                            <p class="text-gray-500 dark:text-gray-300 text-sm">{{prop.p_address}}</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <p class="text-green-600 font-bold dark:text-green-400">{{prop.price}} ETH</p>
+                                <p class="text-gray-500 dark:text-gray-300 text-sm">Intrests: {{count}}</p>
+                            </div>
+                            <button onclick="window.location.href='/view_each_property?id={{prop.p_id}}'" class="w-full bg-green-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 transition">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                    
+                    {%endif%}
+                    
+                    {%endfor%}
+                    {%else%}
+                    <!-- "you have no watchlist" message displayed on center -->
+                     <div class="text-center text-gray-500 dark:text-gray-300 text-2xl
+                     font-bold mt-4">
+                     You have no watchlist
+                     </div>
+                    {%endfor%}
+                    <!-- Add more watchlist items here -->
+                </div>
+            </div>
+
+            <!-- Holdings Section -->
+            <div id="holdings" class="content-section hidden">
+                <h2 class="text-2xl font-bold mb-4">{{holding_data[0]['proprty_id'] }}Your Holdings</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Example Holding -->
+                    {%for prop in prop_data%}
+                    {%if prop.p_id !=  holding_id%}
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700 transition-transform transform hover:scale-105 overflow-hidden">
+                        <img src="{{prop.p_image}}" alt="Property Image" class="w-full h-48 object-cover rounded-lg">
+                        <div class="mt-4">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{prop.p_name}}</h3>
+                            <p class="text-gray-500 dark:text-gray-300 text-sm">{{prop.p_address}}</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <p class="text-green-600 font-bold dark:text-green-400">{{prop.price}} ETH</p>
+                                <p class="text-gray-500 dark:text-gray-300 text-sm">Intrests: {{count}}</p>
+                            </div>
+                            <button onclick="window.location.href='/view_each_property?id={{prop.p_id}}'" class="w-full bg-green-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 transition">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                    {%endif%}
+                    
+                    {%endfor%}
+                    {%if not holding_id%}
+                    {%for prop in prop_all_data%}
+                    {%for hold in holding_data%}
+                    {%if hold.property_id==prop.p_id%}
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700 transition-transform transform hover:scale-105 overflow-hidden">
+                        <img src="{{prop.p_image}}" alt="Property Image" class="w-full h-48 object-cover rounded-lg">
+                        <div class="mt-4">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{prop.p_name}}</h3>
+                            <p class="text-gray-500 dark:text-gray-300 text-sm">{{prop.p_address}}</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <p class="text-green-600 font-bold dark:text-green-400">{{prop.price}} ETH</p>
+                                <p class="text-gray-500 dark:text-gray-300 text-sm">Intrests: {{count}}</p>
+                            </div>
+                            <button onclick="window.location.href='/view_each_property?id={{prop.p_id}}'" class="w-full bg-green-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 transition">
+                                Put for sale
+                            </button>
+                        </div>
+                    </div>
+                    
+                    
+                    {%endif%}
+                    {%endfor%}{%endfor%}  {%endif%} 
+                    <!-- Add more holdings here -->
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="order" class="interests-list content-section hidden">
+                <h2 class="section-title">Owner Transaction Requests</h2>
+               
+                {% for detail in owner %}
+                <div class="transaction-card">
+                    <div class="property-image">
+                        {% set image = "hbb" %}
+                       
+                        {%for prop in prop_all_data%}
+                            {% if prop.p_id == detail.property_id  %}
+                            {% set image = prop.p_image %}
+                                <img src="{{ prop.p_image }}" alt="Property Image" class="w-48 h-32 object-cover rounded" />
+                                
+        
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="transaction-details">
+                        <div class="detail-row">
+                            Seller: </span>
+                            <span class="detail-value">{{ detail.seller_name }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">{{img_id}}Property:</span>
+                            <span class="detail-value">{{ detail.property_location }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Price:</span>
+                            <span class="detail-value highlight">{{ detail.sale_price }} ETH</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Date:</span>
+                            <span class="detail-value">{{ detail.created_at }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="transaction-actions">
+                        <button class="action-btn accept-btn" onclick="window.location.href='/buyer_approval_ownership?o_id={{detail.agreement_id}}'">
+                            <i class="fas fa-check"></i> Accept
+                        </button>
+                        <button class="action-btn reject-btn">
+                            <i class="fas fa-times"></i> Reject
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <style>
+                .interests-list {
+                    background: #2a3042;
+                    border-radius: 12px;
+                    padding: 25px;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                }
+                
+                .section-title {
+                    color: #fff;
+                    font-weight: 600;
+                    font-size: 1.5rem;
+                    margin-bottom: 25px;
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                }
+                
+                .transaction-card {
+                    display: flex;
+                    background: #36405a;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    margin-bottom: 20px;
+                    transition: transform 0.3s ease;
+                }
+                
+                .transaction-card:hover {
+                    transform: translateY(-3px);
+                }
+                
+                .property-image {
+                    width: 150px;
+                    height: 150px;
+                    flex-shrink: 0;
+                }
+                
+                .property-image img {
+                    width: 100%;
+                    height: 114%;
+                    object-fit: cover;
+                }
+                
+                .transaction-details {
+                    flex: 1;
+                    padding: 20px;
+                    color: #e0e0e0;
+                }
+                
+                .detail-row {
+                    display: flex;
+                    margin-bottom: 8px;
+                }
+                
+                .detail-label {
+                    font-weight: 500;
+                    width: 100px;
+                    color: #a0a8c0;
+                }
+                
+                .detail-value {
+                    flex: 1;
+                }
+                
+                .highlight {
+                    color: #4caf50;
+                    font-weight: 600;
+                }
+                
+                .transaction-actions {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    padding: 0 20px;
+                    background: rgba(0, 0, 0, 0.1);
+                    border-left: 1px solid rgba(255, 255, 255, 0.05);
+                }
+                
+                .action-btn {
+                    padding: 8px 15px;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-weight: 500;
+                    margin: 5px 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 100px;
+                    transition: all 0.2s ease;
+                }
+                
+                .accept-btn {
+                    background: #4caf50;
+                    color: white;
+                }
+                
+                .accept-btn:hover {
+                    background: #3d8b40;
+                }
+                
+                .reject-btn {
+                    background: #f44336;
+                    color: white;
+                }
+                
+                .reject-btn:hover {
+                    background: #d32f2f;
+                }
+                
+                .action-btn i {
+                    margin-right: 8px;
+                }
+            </style>
+
+            <!-- Wallet Section -->
+            <div id="wallet" class="content-section hidden">
+                <h2 class="text-2xl font-bold mb-4">Wallet</h2>
+                <div class="bg-white p-6 shadow-lg rounded-lg dark:bg-gray-800 dark:text-white">
+                    <p class="text-green-600 font-bold text-xl dark:text-green-400">Balance: $50,000</p>
+                    <h3 class="font-bold mt-4">Transaction History</h3>
+                    <ul class="mt-2 space-y-2">
+                        <li class="text-sm">$10,000 received from Property Sale</li>
+                        <li class="text-sm">$5,000 paid for Property Maintenance</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div id="Intrests" class="content-section hidden">
+                <h2 class="text-2xl font-bold mb-4 color-whit">Intrested propertys</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {%for  intrests_data in  intrests_data%}
+                    {%for prop in prop_all_data%}
+                    {%if  intrests_data.p_id == prop.p_id%}
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700 transition-transform transform hover:scale-105 overflow-hidden">
+                       <!-- a   intrests_datalist button on top right on imageand div -->
+                        <!-- <button onclick="window.location.href='/remove_watchlist_home?w_id={{watch.w_id}}'" class="absolute top-
+                        0 right-0 bg-red-600 text-white px-2 py-1 rounded-lg hover:bg
+                        -red-700 dark:bg-red-700 dark:hover:bg-red-800 transition">
+                        Remove
+                        </button> -->
+                       <img src="{{prop.p_image}}" alt="Property Image" class="w-full h-48 object-cover rounded-lg">
+                       <div class="mt-4">
+                           <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{prop.p_name}}</h3>
+                           <p class="text-gray-500 dark:text-gray-300 text-sm">{{prop.p_address}}</p>
+                           <div class="flex justify-between items-center mt-2">
+                               <p class="text-green-600 font-bold dark:text-green-400">{{prop.price}} ETH</p>
+                               <p class="text-gray-500 dark:text-gray-300 text-sm">Intrests: {{count}}</p>
+                           </div>
+                           <button onclick="window.location.href='/view_intrests?id={{prop.p_id}}'" class="w-full bg-green-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 transition">
+                               View Details
+                           </button>
+                       </div>
+                   </div>
+                  
+                   {%endif%}
+                   
+                   {%endfor%}
+                   {%else%}
+                   <!-- "you have no watchlist" message displayed on center -->
+                    <div class="text-center text-gray-500 dark:text-gray-300 text-2xl
+                    font-bold mt-4">
+                    You have no Interests
+                    </div>
+                   {%endfor%}
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings" class="content-section hidden">
+                <h2 class="text-2xl font-bold mb-4">Settings</h2>
+                <div class="bg-white p-6 shadow-lg rounded-lg dark:bg-gray-800 dark:text-white">
+                    <form>
+                        <label class="block mb-2">Email</label>
+                        <input type="email" class="border p-2 rounded-lg w-full mb-4 dark:bg-gray-700 dark:border-gray-600">
+                        <label class="block mb-2">Password</label>
+                        <input type="password" class="border p-2 rounded-lg w-full mb-4 dark:bg-gray-700 dark:border-gray-600">
+                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition dark:bg-green-700 dark:hover:bg-green-600">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- KYC Verification Section -->
+            <div id="kycSection" class="content-section hidden">
+                <h2 class="text-2xl font-bold mb-4">KYC Verification</h2>
+                <div class="bg-white p-6 shadow-lg rounded-lg dark:bg-gray-800 dark:text-white">
+                    <p>KYC Status: 
+                        {% if session['status']=='pending' %}
+                            <span class="text-green-600 dark:text-green-400">Verified in 24 hours</span>
+                        {%elif session['status']=='verified'%}
+                        <span class="text-green-600 dark:text-green-400">Verified</span>
+                        {% else %}
+                            <span class="text-red-600 dark:text-red-400">Not Verified</span>
+                        {% endif %}
+                    </p>
+                    {% if not session['status'] or session['status'] == 'rejected' %}
+                        <button onclick="kyc_verify()" name="kyc_verify" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition mt-2 dark:bg-blue-700 dark:hover:bg-blue-600">
+                            Verify KYC
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+     // JavaScript to toggle sections and highlight selected navigation item
+     function showSection(sectionId) {
+        // Hide all sections
+        document.querySelectorAll('.content-section').forEach(section => {
+            section.classList.add('hidden');
+        });
+        // Show the selected section
+        document.getElementById(sectionId).classList.remove('hidden');
+
+        // Remove the selected class from all navigation items
+        document.querySelectorAll('#sidebar nav ul li a').forEach(link => {
+            link.classList.remove('selected-nav-item');
+        });
+
+        // Add the selected class to the clicked navigation item
+        const selectedLink = document.querySelector(`#sidebar nav ul li a[onclick*="${sectionId}"]`);
+        if (selectedLink) {
+            selectedLink.classList.add('selected-nav-item');
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ownership Transfer - Buyer Approval</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            text-align: center;
+            color: #209005;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #28ba07;
+            border-radius: 5px;
+            background: #fff;
+            font-size: 16px;
+        }
+        .agreement-box {
+            padding: 10px;
+            background: #ffffff;
+            border-radius: 5px;
+            border: 1px solid #28ba07;
+            margin-top: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+        .checkbox-container input {
+            margin-right: 10px;
+        }
+        button {
+            background-color: #28ba07;
+            color: white;
+            padding: 10px;
+            border: none;
+            width: 100%;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #209005;
+        }
+        button:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+        .step {
+            display: none;
+        }
+        .step.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Step 1: View Agreement -->
+        <div id="step1" class="step active">
+            <h2>Step 1: Review Seller Agreement</h2>
+            <label>Property ID:</label>
+            <input type="text" id="propertyId" value="{{ intrest[0]['property_id'] }}" disabled>
+            <label>Seller Name:</label>
+            <input type="text" id="sellerName" value="{{ intrest[0]['seller_name'] }}" disabled>
+            <label>Buyer Name:</label>
+            <input type="text" id="buyerName" value="{{ intrest[0]['buyer_name'] }}" disabled>
+            <label>Property Location:</label>
+            <input type="text" id="propertyLocation" value="{{ intrest[0]['property_location'] }}" disabled>
+            <label>Sale Price (ETH):</label>
+            <input type="text" id="salePrice" value="{{ intrest[0]['sale_price'] }}" disabled>
+            <label>Agreement Terms:</label>
+            <div class="agreement-box" id="agreementText">
+                {{ intrest[0]['agreement_terms'] }}
+            </div>
+            <div class="checkbox-container">
+                <input type="checkbox" id="agreeTerms" required>
+                <label for="agreeTerms">I agree to the terms and conditions</label>
+            </div>
+            <button type="submit" id="nextStep" onclick="window.location.href='/payment?o_id={{ intrest[0].agreement_id }}'">Next</button>
+
+        </div>
+
+        <!-- Step 2: Make Payment -->
+        <div id="step2" class="step">
+            <h2>Step 2: Make Payment</h2>
+            <label>Amount to Pay (ETH):</label>
+            <input type="text" id="paymentAmount" value="{{ intrest[0]['sale_price'] }}" disabled>
+            <label>Seller's Wallet Address:</label>
+            <input type="text" id="sellerWallet" value="{{ intrest[0]['seller_wallet'] }}" disabled>
+            <button id="makePayment">Pay with ETH</button>
+            <button id="prevStep">Back</button>
+        </div>
+    </div>
+
+    <script>
+        const web3 = new Web3(window.ethereum);
+        const contractAddress = "YOUR_GENECHAIN_CONTRACT_ADDRESS"; // Replace with your GeneChain contract address
+        const contractABI = [ /* Paste ABI Here */ ]; // Replace with your contract ABI
+        const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+        let currentStep = 1;
+
+        // Function to load agreement details from GeneChain
+        async function loadAgreement() {
+            try {
+                const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+                const buyer = accounts[0];
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const propertyId = urlParams.get('propertyId'); // Example: ?propertyId=123
+
+                if (!propertyId) {
+                    alert("Property ID not found in URL.");
+                    return;
+                }
+
+                // Fetch agreement details from GeneChain
+                const agreement = await contract.methods.agreements(propertyId).call();
+
+                // Populate form fields
+                document.getElementById("propertyId").value = agreement.propertyId;
+                document.getElementById("sellerName").value = agreement.seller;
+                document.getElementById("buyerName").value = buyer;
+                document.getElementById("propertyLocation").value = agreement.location;
+                document.getElementById("salePrice").value = web3.utils.fromWei(agreement.price, "ether");
+                document.getElementById("agreementText").innerText = agreement.agreementText;
+
+                // Set payment details for Step 2
+                document.getElementById("paymentAmount").value = web3.utils.fromWei(agreement.price, "ether");
+                document.getElementById("sellerWallet").value = agreement.seller;
+            } catch (error) {
+                console.error("Error loading agreement details:", error);
+                alert("Failed to load agreement details. Please try again.");
+            }
+        }
+
+        // Enable/disable the "Next" button based on checkbox state
+        document.getElementById("agreeTerms").addEventListener("change", function() {
+            document.getElementById("nextStep").disabled = !this.checked;
+        });
+
+        // Handle "Next" button click
+        document.getElementById("nextStep").addEventListener("click", function () {
+            document.getElementById(`step${currentStep}`).classList.remove("active");
+            currentStep++;
+            document.getElementById(`step${currentStep}`).classList.add("active");
+        });
+
+        // Handle "Back" button click
+        document.getElementById("prevStep").addEventListener("click", function () {
+            document.getElementById(`step${currentStep}`).classList.remove("active");
+            currentStep--;
+            document.getElementById(`step${currentStep}`).classList.add("active");
+        });
+
+        // Handle "Pay with ETH" button click
+        document.getElementById("makePayment").addEventListener("click", async function () {
+            try {
+                const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+                const buyer = accounts[0];
+
+                const propertyId = document.getElementById("propertyId").value;
+                const amount = web3.utils.toWei(document.getElementById("paymentAmount").value, "ether");
+
+                // Send payment to the seller's wallet via GeneChain
+                const receipt = await contract.methods.completePayment(propertyId)
+                    .send({ from: buyer, value: amount });
+
+                alert("Payment successful! Ownership transfer completed.");
+                console.log("Transaction receipt:", receipt);
+            } catch (error) {
+                console.error("Error making payment:", error);
+                alert("Payment failed. Please try again.");
+            }
+        });
+
+        // Load agreement details on page load
+        loadAgreement();
+    </script>
+</body>
+</html>

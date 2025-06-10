@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockeste - Convert to ETH</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/payment.css') }}">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Blockeste</h1>
+            <p>Convert INR to Ethereum (ETH)</p>
+            <div id="eth-price">
+                <strong>1 ETH = ₹<span id="real-time-eth-price">Loading...</span></strong>
+            </div>
+        </header>
+
+        <main>
+            <!-- Conversion Form -->
+            <form id="conversion-form">
+                <label for="amount">Enter Amount in USD:</label>
+                <input type="number" id="amount" placeholder="e.g., 1000" required>
+
+                <label for="wallet-address">Your ETH Wallet Address (Optional):</label>
+                <input type="text" id="wallet-address" placeholder="e.g., 0x...">
+
+                <button type="button" id="pay-button">Pay with UPI</button>
+            </form>
+
+            <!-- Result Section -->
+            <div id="result">
+                <h2>You Will Receive:</h2>
+                <p id="eth-amount">0 ETH</p>
+                <small>Conversion rate updates in real-time.</small>
+            </div>
+
+            <!-- Payment Instructions Section -->
+            <div id="payment-instructions">
+                <h2>How It Works</h2>
+                <ol>
+                    <li>Enter the amount in INR you want to convert to ETH.</li>
+                    <li>Provide your ETH wallet address (optional). If you don’t have one, we’ll hold the ETH in your Blockeste account.</li>
+                    <li>Pay the INR amount using UPI.</li>
+                    <li>We’ll convert the INR to ETH at the current exchange rate and send it to your wallet or account.</li>
+                </ol>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2023 Blockeste. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/payment.js') }}"></script>
+</body>
+</html>

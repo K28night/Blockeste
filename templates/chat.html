@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Bargain Chat</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/chat.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Chat List Section -->
+        <div class="chat-list hiden" id="chat-list">
+            <div class="chat-list-header">
+                <h2>Chats</h2>
+            </div>
+            <div class="chat-list-items" id="chat-list-items">
+                <!-- Chat items will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Chat Window Section -->
+        <div class="chat-window" id="chat-window">
+            <div class="chat-header">
+                <button class="back-button" id="back-button"><i class="fa-solid fa-arrow-left"></i></button>
+                <div class="chat-header-content">
+                    <h2>Property Bargain Chat</h2>
+                    <p>You can chat to bargain the property price</p>
+                </div>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <!-- Messages will appear here -->
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" placeholder="Type your message...">
+                <button id="send-button">Send</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const sender_id = {{ sender_id }};  // Pass sender_id from Flask session
+        const receiver_id = {{ receiver_id }};  // Get receiver_id from URL parameter
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+    <script src="../static/js/chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockeste</title>
+  
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body>
+   <header>
+    <nav>
+        <a href="#" class="logo">
+            <img src="../static/image/WhatsApp Image 2025-02-07 at 10.34.33_10f9a5a1.png" 
+                 alt="logo" height="50px" width="70px" class="logoimg">
+            <span>Blockeste</span>
+        </a>
+        <div class="list">
+            <a href="#home">Home</a>
+            <a href="#properties">Properties</a>
+            <a href="#contact">Contact Us</a>
+            <select name="pages" id="select">
+                <option value="page1">Page1</option>
+                <option value="page1" selected>Page2</option>
+            </select>
+        </div>
+        <button class="login" id="login">Login</button>    </nav>
+    </header>
+    <div class="tab">
+        <div class="tabs">
+            <div class="login-panal" id="login-panal">
+                
+        
+            <button id="loginTab" class="active">Login</button>
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"></svg>
+          
+            <button id="registerTab" >Register</button>
+         
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+            <form id="loginForm" class="form active" method="POST" action="/">
+                <input type="hidden" name="action" value="login">
+                <input type="email" name="email" placeholder="Enter the username"  class="pl-8" required />
+                <input type="password" name="password" placeholder="Enter the password" id="pass"  required />
+                <button type="submit" class="ulogin">Login</button>
+                
+              </form>
+              <!-- <button id="firelogin" class="ulogin">Login/Register with google</button> -->
+        
+              <form id="registerForm" class="form" method="POST" action="/">
+                <input type="hidden" name="action" value="register">
+            
+                <input type="text" name="username" id="username" placeholder="Enter the username" 
+                       required pattern="^[A-Za-z0-9_]{3,20}$" 
+                       title="Username should be 3-20 characters, letters, numbers, and underscores only." />
+            
+                       <input type="email" name="email" id="email" required 
+                        placeholder="Enter your Gmail"
+                        pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
+                        title="Email must end with @gmail.com">
+                <input type="password" name="password" id="password" placeholder="Enter the password" required 
+                       minlength="6" 
+                       title="Password should be at least 6 characters long." />
+            
+                <input type="tel" name="phone" id="phone" pattern="[0-9]{10}" placeholder="Enter phone number" required 
+                       title="Phone number should be 10 digits." />
+            
+                <button type="submit" class="rlogin" name="register">Register</button>
+            </form>
+            
+            
+        </div> </div>
+</div>
+   <main>
+    <div class="first-section">
+    <img  src="https://cdn.prod.website-files.com/6706114f63d25947a98f7dd3/6706114f63d25947a98f7de4_home-hero.avif" loading="lazy" sizes="(max-width: 479px) 93vw, (max-width: 767px) 96vw, (max-width: 991px) 92vw, (max-width: 1279px) 35vw, (max-width: 1439px) 38vw, 524.578125px" srcset="https://cdn.prod.website-files.com/6706114f63d25947a98f7dd3/6706114f63d25947a98f7de4_home-hero.avif 500w, https://cdn.prod.website-files.com/6706114f63d25947a98f7dd3/6706114f63d25947a98f7de4_home-hero.avif 1048w" alt="Home hero" class="house">
+       <p class="h1">Find the right and best place for your family.</p>
+       <button class="properties" id="properties">Start exploring  <i class="fa-solid fa-arrow-right" style="padding:4px"></i></button>
+   <div class="search">
+    <form action="/search" class="search-form">
+        <input type="text" name="property" placeholder="Search for properties" required>
+        <button type="submit">Search</button>
+    </form>
+    <div class="lists">
+        <div class="proper dropdown-btn" id="proper"><p>
+            <img data-wf-id="[&quot;d63b9f43-a2a7-eddf-e947-5bbfb56cf88d&quot;,&quot;7ff919e1-b397-2db9-2197-836fda2dab0a&quot;]" data-w-instance-of="7ff919e1-b397-2db9-2197-836fda2dab0a" alt="House icon" src="https://cdn.prod.website-files.com/67a4a535978bf17f8fe75d26/67a4a535978bf17f8fe75dad_home-icon.svg" loading="lazy">
+            <span>Properties</span>
+            <img src="../static/image/keyboard_arrow_down_24dp_UNDEFINED_FILL0_wght400_GRAD0_opsz24.svg" alt="down arrow" class="start">
+        </p></div>
+            <div class="toggle" id="toggle">
+                    <div><a href="">Townhouse</a></div>
+                    <div><a href="">Cabin</a></div>
+                    <div><a href="">Mansion</a></div>
+                    <div><a href="">Farmhouse</a></div>
+                    <div><a href="">Vacation home</a></div>
+                    <div><a href="">Apartment</a></div>
+               </div>
+        <div class="location dropdown-btn"><p>
+            <img data-wf-id="[&quot;d63b9f43-a2a7-eddf-e947-5bbfb56cf88d&quot;,&quot;7ff919e1-b397-2db9-2197-836fda2dab19&quot;]" data-w-instance-of="7ff919e1-b397-2db9-2197-836fda2dab19" alt="Location icon" src="https://cdn.prod.website-files.com/67a4a535978bf17f8fe75d26/67a4a535978bf17f8fe75db2_location-icon.svg" loading="lazy">
+            <span>Location</span>
+            <img src="../static/image/keyboard_arrow_down_24dp_UNDEFINED_FILL0_wght400_GRAD0_opsz24.svg" alt="down arrow">
+        </p></div>
+        <div class="toggle" id="loc">
+            <div><a href="">Kasaragod</a></div>
+            <div><a href="">Kottayam</a></div>
+            <div><a href="">Kozhikode</a></div>
+            <div><a href="">Wayanad</a></div>
+            <div><a href="">Thrissur</a></div>
+            <div><a href="">Alappuzha</a></div>
+            <div><a href="">Idukk</a></div>
+       </div>
+        <div class="types dropdown-btn"><p>
+            <img data-wf-id="[&quot;d63b9f43-a2a7-eddf-e947-5bbfb56cf88d&quot;,&quot;7ff919e1-b397-2db9-2197-836fda2dab28&quot;]" data-w-instance-of="7ff919e1-b397-2db9-2197-836fda2dab28" alt="Types icon" src="https://cdn.prod.website-files.com/67a4a535978bf17f8fe75d26/67a4a535978bf17f8fe75db4_types-icon.svg" loading="lazy">
+            <span>Types</span>
+            <img src="../static/image/keyboard_arrow_down_24dp_UNDEFINED_FILL0_wght400_GRAD0_opsz24.svg" alt="down arrow">
+        </p></div>
+        <div class="toggle" id="type">
+            <div><a href="">Rent</a></div>
+            <div><a href="">Sell</a></div>
+            <div><a href="">Buy</a></div>
+       </div>
+   </div>
+   </div></div>
+   <div class="listed-propeerty">
+    <div class="prop-heading">
+<h2>New Listings</h2>
+<button class="list-button">Explore All<i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i></button>
+</div>
+<div class="pro-list">
+    <div class="elements">
+        <div class="type">Rent</div>
+        <img src="../static/image/360_F_322066808_CANrp7u5Cdiz7700TJReqKD299d2AZtD.jpg" alt="home" class="image-list">
+        
+        <p class="name">willo Height <span>$29000</span></p>
+        <p class="address">address <span>size</span></p>
+    </div>
+    <div class="elements">
+        <div class="type">Sale</div>
+        <img src="../static/image/360_F_322066808_CANrp7u5Cdiz7700TJReqKD299d2AZtD.jpg" alt="home" class="image-list">
+        <p class="name">willo Height <span>29000</span></p>
+        <p class="address">address <span>size</span></p>
+    </div>
+    <div class="elements">
+        <div class="type">Sale</div>
+        <img src="../static/image/360_F_322066808_CANrp7u5Cdiz7700TJReqKD299d2AZtD.jpg" alt="home" class="image-list">
+        <p class="name">willo Height <span>29000</span></p>
+        <p class="address">address <span>size</span></p>
+    </div>
+   </div>
+   <div class="about">
+   
+        <img src="https://cdn.prod.website-files.com/6706114f63d25947a98f7dd3/6706114f63d25947a98f7ded_home-about-image.avif" loading="lazy" sizes="(max-width: 767px) 93vw, (max-width: 991px) 67vw, (max-width: 1279px) 41vw, 512px" srcset="https://cdn.prod.website-files.com/6706114f63d25947a98f7dd3/6706114f63d25947a98f7ded_home-about-image.avif 500w, https://cdn.prod.website-files.com/6706114f63d25947a98f7dd3/6706114f63d25947a98f7ded_home-about-image.avif 1024w" alt="Home about image">
+    <div class="about-list">
+        <p >About us</p>
+        <p class="h5">About our Real Estate Firm</p>
+        <p>Our mission is simple, to provide unparalleled expertise, guidance, and support to our clients across their real estate journey.</p>
+    <div>
+        <p class="head">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 60 60" fill="none"><path d="M20.7495 28.5C20.7495 30.425 22.2495 32 24.0745 32H27.8245C29.4245 32 30.7245 30.625 30.7245 28.95C30.7245 27.125 29.9245 26.475 28.7495 26.05L22.7495 23.95C21.5495 23.525 20.7495 22.875 20.7495 21.05C20.7495 19.375 22.0495 18 23.6495 18H27.3995C29.2495 18.025 30.7495 19.575 30.7495 21.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M25.7505 32.1249V33.9749" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M25.7505 16.025V17.975" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M25.7245 44.9501C36.7564 44.9501 45.6995 36.0069 45.6995 24.9751C45.6995 13.9432 36.7564 5.00006 25.7245 5.00006C14.6926 5.00006 5.74951 13.9432 5.74951 24.9751C5.74951 36.0069 14.6926 44.9501 25.7245 44.9501Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M55.5501 41.8752C54.7251 48.5252 49.2751 53.9752 42.6251 54.8002C38.6001 55.3002 34.8501 54.2002 31.9251 52.0502C30.2501 50.8252 30.6501 48.2252 32.6501 47.6252C40.1751 45.3502 46.1001 39.4002 48.4001 31.8752C49.0001 29.9002 51.6001 29.5002 52.8251 31.1502C54.9501 34.1002 56.0501 37.8502 55.5501 41.8752Z" fill="#FF6314"></path></svg>
+            Affordable Price</p>
+        <p>Offering competitive rates that make quality accessible to all.</p>
+        <p class="head">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 60 60" fill="none"><path d="M27.6252 6.1248C29.3502 4.6498 32.1752 4.6498 33.9252 6.1248L37.8752 9.52507C38.6252 10.1751 40.0252 10.7 41.0252 10.7H45.2752C47.9252 10.7 50.1002 12.8748 50.1002 15.5248V19.775C50.1002 20.75 50.6252 22.175 51.2752 22.925L54.6752 26.8749C56.1502 28.5999 56.1502 31.425 54.6752 33.175L51.2752 37.1249C50.6252 37.8749 50.1002 39.2749 50.1002 40.2749V44.5251C50.1002 47.1751 47.9252 49.3499 45.2752 49.3499H41.0252C40.0502 49.3499 38.6252 49.8748 37.8752 50.5248L33.9252 53.9248C32.2002 55.3998 29.3752 55.3998 27.6252 53.9248L23.6752 50.5248C22.9252 49.8748 21.5252 49.3499 20.5252 49.3499H16.2002C13.5502 49.3499 11.3752 47.1751 11.3752 44.5251V40.2499C11.3752 39.2749 10.8502 37.8749 10.2252 37.1249L6.8502 33.15C5.4002 31.425 5.4002 28.625 6.8502 26.9L10.2252 22.925C10.8502 22.175 11.3752 20.775 11.3752 19.8V15.5248C11.3752 12.8748 13.5502 10.7 16.2002 10.7H20.5252C21.5002 10.7 22.9252 10.1751 23.6752 9.52507L27.6252 6.1248Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M24.4995 36.2499L29.0995 39.8498C29.5745 40.3248 30.6245 40.5499 31.3245 40.5499H35.7495C37.1495 40.5499 38.6745 39.4999 39.0245 38.0999L41.8245 29.5498C42.3995 27.9248 41.3495 26.4999 39.5995 26.4999H34.9245C34.2245 26.4999 33.6495 25.9251 33.7495 25.1001L34.3245 21.3501C34.5495 20.3001 33.8495 19.125 32.7995 18.775C31.8745 18.425 30.6995 18.8999 30.2245 19.5999L24.4995 26.2499" fill="#FF6314"></path><path d="M19.5 37.0497V25.5999C19.5 23.9499 20.2 23.3748 21.85 23.3748H23.025C24.65 23.3748 25.375 23.9499 25.375 25.5999V37.0497C25.375 38.6747 24.675 39.2748 23.025 39.2748H21.85C20.2 39.2748 19.5 38.6997 19.5 37.0497Z" fill="#FF6314"></path></svg>
+            Clear Legality</p>
+        <p>Ensuring transparent and compliant legal processes.</p>
+        <p class="head">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 60 60" fill="none"><path d="M45.7497 17.9001C45.5997 17.8751 45.4247 17.8751 45.2747 17.9001C41.8247 17.7751 39.0747 14.9501 39.0747 11.4501C39.0747 7.87507 41.9497 5.00006 45.5247 5.00006C49.0997 5.00006 51.9747 7.90007 51.9747 11.4501C51.9497 14.9501 49.1997 17.7751 45.7497 17.9001Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M43.1751 36.1002C46.6001 36.6752 50.3751 36.0752 53.0251 34.3002C56.5501 31.9502 56.5501 28.1002 53.0251 25.7502C50.3501 23.9752 46.5251 23.3751 43.1001 23.9751" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M15.6762 17.9001C15.8262 17.8751 16.0012 17.8751 16.1512 17.9001C19.6012 17.7751 22.3512 14.9501 22.3512 11.4501C22.3512 7.87513 19.4762 5.00012 15.9012 5.00012C12.3262 5.00012 9.45117 7.90013 9.45117 11.4501C9.47617 14.9501 12.2262 17.7751 15.6762 17.9001Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M18.2506 36.1002C14.8256 36.6752 11.0506 36.0752 8.40059 34.3002C4.87559 31.9502 4.87559 28.1002 8.40059 25.7502C11.0756 23.9752 14.9006 23.3751 18.3256 23.9751" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M31.05 39.675C30.85 39.65 30.625 39.65 30.4 39.675C25.8 39.525 22.125 35.75 22.125 31.1C22.15 26.35 25.975 22.5 30.75 22.5C35.5 22.5 39.35 26.35 39.35 31.1C39.325 35.75 35.675 39.525 31.05 39.675Z" fill="#FF6314"></path><path d="M22.9245 44.8498C19.1495 47.3748 19.1495 51.5248 22.9245 54.0248C27.2245 56.8998 34.2745 56.8998 38.5745 54.0248C42.3495 51.4998 42.3495 47.3498 38.5745 44.8498C34.2995 41.9748 27.2495 41.9748 22.9245 44.8498Z" fill="#FF6314"></path></svg>
+            Experienced Agents</p>
+        <p>Guided by professionals with expertise in the industry.</p>
+    </div>
+    </div>
+   </div></div>
+    </main>
+   <script src="../static/js/index.js"></script>
+</body>
+</html>

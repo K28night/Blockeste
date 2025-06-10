@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Cost Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/property_cost_calculator.css') }}">
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white shadow-lg">
+        <div class="container mx-auto p-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-green-600">Property Cost Calculator</h1>
+            <button onclick="window.location.href='/'" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">Back</button>
+        </div>
+    </header>
+
+    <!-- Calculator Container -->
+    <div class="container mx-auto p-4">
+        <!-- Calculator Form -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-4">Calculate Property Costs</h2>
+            <form id="propertyCostForm" class="space-y-4">
+                <!-- Property Cost in ETH -->
+                <div>
+                    <label for="propertyCostETH" class="block text-sm font-medium text-gray-700">Property Cost (ETH)</label>
+                    <input type="number" id="propertyCostETH" name="propertyCostETH" placeholder="Enter property cost in ETH" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
+                </div>
+
+                <!-- Currency Selection -->
+                <div>
+                    <label for="currency" class="block text-sm font-medium text-gray-700">Select Currency</label>
+                    <select id="currency" name="currency" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        <option value="ETH">ETH</option>
+                        <option value="INR">INR</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                </div>
+
+                <!-- Calculate Button -->
+                <button type="submit" class="w-full bg-green-600 text-white p-2 rounded-md hover:bg-green-700 transition">Calculate</button>
+            </form>
+        </div>
+
+        <!-- Results Display -->
+        <div class="bg-white p-6 rounded-lg shadow-md mt-6">
+            <h2 class="text-xl font-semibold mb-4">Results</h2>
+            <div class="space-y-2">
+                <p><strong>Brokerage (1%):</strong> <span id="brokerageAmount">0 ETH</span></p>
+                <p><strong>Final Amount:</strong> <span id="finalAmount">0</span></p>
+            </div>
+        </div>
+
+        <!-- Instructions Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md mt-6">
+            <h2 class="text-xl font-semibold mb-4">About Brokerage</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-lg font-semibold">What is Brokerage?</h3>
+                    <p class="text-gray-600">Brokerage is a fee charged by the platform for facilitating the transaction. In this case, the brokerage is fixed at <strong>1%</strong> of the property cost in ETH.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold">How is Brokerage Calculated?</h3>
+                    <p class="text-gray-600">The brokerage is calculated as <strong>1% of the property cost in ETH</strong>. For example, if the property cost is 10 ETH, the brokerage will be 0.10 ETH.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold">How is the Final Amount Calculated?</h3>
+                    <p class="text-gray-600">The final amount is calculated by subtracting the brokerage from the property cost. For example, if the property cost is 10 ETH and the brokerage is 0.10 ETH, the final amount will be 9.90 ETH.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold">How Does Currency Conversion Work?</h3>
+                    <p class="text-gray-600">You can select a currency (INR, USD, EUR) to display the final amount. The conversion rates are based on current market values. For example, if 1 ETH = 200,000 INR, then 9.90 ETH will be displayed as 1,980,000 INR.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/property_cost_calculator.js') }}"></script>
+</body>
+</html>

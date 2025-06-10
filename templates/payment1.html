@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockeste - Secure Property Payment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --primary-light: #81c784;
+            --secondary: #00796b;
+            --dark: #263238;
+            --light: #f5f5f5;
+            --success: #388e3c;
+            --warning: #f57c00;
+            --danger: #d32f2f;
+            --text: #424242;
+            --text-light: #757575;
+            --background: #f1f8e9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: var(--primary);
+        }
+        
+        .wallet-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .wallet-connect {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .wallet-connect:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .wallet-address {
+            background-color: var(--primary-light);
+            color: var(--dark);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .network-indicator {
+            background-color: var(--secondary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .payment-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .property-details {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .property-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .property-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .property-id {
+            display: inline-block;
+            background-color: var(--light);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+        
+        .property-address {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .property-price {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .property-price i {
+            font-size: 24px;
+        }
+        
+        .property-description {
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+        
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            font-weight: 500;
+            text-align: right;
+        }
+        
+        .payment-methods {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--primary);
+        }
+        
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 18px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .payment-option:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 4px 8px rgba(46, 125, 50, 0.1);
+        }
+        
+        .payment-option.selected {
+            border-color: var(--primary);
+            background-color: rgba(46, 125, 50, 0.05);
+        }
+        
+        .payment-option.selected::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 30px 30px 0;
+            border-color: transparent var(--primary) transparent transparent;
+        }
+        
+        .payment-option.selected::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            color: white;
+            font-size: 12px;
+            z-index: 1;
+        }
+        
+        .payment-icon {
+            width: 48px;
+            height: 48px;
+            margin-right: 18px;
+            object-fit: contain;
+        }
+        
+        .payment-info {
+            flex: 1;
+        }
+        
+        .payment-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .payment-desc {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        .payment-fee {
+            font-size: 12px;
+            color: var(--primary);
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        
+        .payment-details {
+            margin-top: 25px;
+            padding: 25px;
+            background-color: var(--light);
+            border-radius: 10px;
+            display: none;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .payment-details.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .detail-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .crypto-address {
+            word-break: break-all;
+            background-color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 15px 0;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        
+        .copy-btn {
+            background-color: var(--primary-light);
+            color: var(--dark);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex: 1;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #e0e0e0;
+            color: var(--text-light);
+        }
+        
+        .btn-outline:hover {
+            background-color: #f5f5f5;
+            border-color: var(--primary-light);
+            color: var(--dark);
+        }
+        
+        .status-message {
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 8px;
+            display: none;
+            border: 1px solid transparent;
+        }
+        
+        .status-message.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .success {
+            background-color: rgba(56, 142, 60, 0.1);
+            color: var(--success);
+            border-color: rgba(56, 142, 60, 0.3);
+        }
+        
+        .error {
+            background-color: rgba(211, 47, 47, 0.1);
+            color: var(--danger);
+            border-color: rgba(211, 47, 47, 0.3);
+        }
+        
+        .warning {
+            background-color: rgba(245, 124, 0, 0.1);
+            color: var(--warning);
+            border-color: rgba(245, 124, 0, 0.3);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .transaction-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            word-break: break-all;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .transaction-link:hover {
+            text-decoration: underline;
+        }
+        
+        .gas-estimate {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+        
+        .gas-label {
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+        
+        .gas-value {
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .terms {
+            margin-top: 30px;
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        .terms a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .terms a:hover {
+            text-decoration: underline;
+        }
+        
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 12px;
+            background-color: var(--light);
+            border-radius: 8px;
+            color: var(--success);
+            font-weight: 500;
+        }
+        
+        @media (max-width: 992px) {
+            .payment-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .property-image {
+                height: 220px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .wallet-info {
+                width: 100%;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .property-price {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <span>Blockeste</span>
+            </div>
+            <div class="wallet-info">
+                <span class="network-indicator" id="networkIndicator">
+                    <i class="fas fa-link"></i> Ethereum
+                </span>
+                <span class="wallet-address" id="walletAddress" style="display: none;">
+                    <i class="fas fa-wallet"></i>
+                    <span id="walletText">Not connected</span>
+                </span>
+                <button id="connectWallet" class="wallet-connect">
+                    <i class="fas fa-plug"></i>
+                    <span>Connect Wallet</span>
+                </button>
+            </div>
+        </header>
+        
+        <div class="payment-container">
+            <div class="property-details">
+                <img src="{{property[0]['p_image']}}" alt="Property" class="property-image">
+                <h1 class="property-title">{{property[0]['p_name']}}</h1>
+                <span class="property-id">Property ID: {{property[0]['p_id']}}</span>
+                <p class="property-address">
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{property[0]['p_address']}}, {{property[0]['city']}},{{property[0]['district']}}, {{property[0]['state']}}
+                </p>
+                <div class="property-price">
+                    <i class="fab fa-ethereum"></i>
+                    <span>{{transfer[0]['sale_price']}} ETH</span>
+                </div>
+                <p class="property-description">
+                    This sustainable smart home features solar panels, energy-efficient appliances, and is fully registered on the blockchain for transparent ownership history. The property comes with all digital access keys and smart contracts for utilities management.
+                </p>
+                
+                <div class="detail-item">
+                    <span class="detail-label">Property Type:</span>
+                    <span class="detail-value">Residential House</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Square Footage:</span>
+                    <span class="detail-value">{{property[0]['area']}} sq ft</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Bedrooms/Bathrooms:</span>
+                    <span class="detail-value">3 / 2.5</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Year Built:</span>
+                    <span class="detail-value">2022</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Blockchain:</span>
+                    <span class="detail-value">Ethereum Mainnet</span>
+                </div>
+            </div>
+            
+            <div class="payment-methods">
+                <h2 class="section-title">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Payment Method</span>
+                </h2>
+                
+                <div class="payment-options">
+                    <div class="payment-option selected" data-method="crypto">
+                        <img src="https://cryptologos.cc/logos/versions/ethereum-eth-logo-colored.svg" alt="Crypto" class="payment-icon">
+                        <div class="payment-info">
+                            <div class="payment-label">Crypto Payment</div>
+                            <div class="payment-desc">Pay directly from your wallet with ETH or stablecoins</div>
+                            <div class="payment-fee">No processing fees • Instant settlement</div>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-option" data-method="fiat">
+                        <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.svg" alt="Fiat" class="payment-icon">
+                        <div class="payment-info">
+                            <div class="payment-label">Fiat Payment</div>
+                            <div class="payment-desc">Credit card or bank transfer (converted to crypto)</div>
+                            <div class="payment-fee">2.9% processing fee • 1-3 day settlement</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="cryptoDetails" class="payment-details active">
+                    <h3 class="detail-title">
+                        <i class="fas fa-coins"></i>
+                        <span>Crypto Payment Details</span>
+                    </h3>
+                    <p>To complete your purchase, send exactly <strong>1.75 ETH</strong> to the following smart contract address:</p>
+                    
+                    <div class="crypto-address">
+                        <span id="contractAddress">0x742d35Cc6634C0532925a3b844Bc454e4438f44e</span>
+                        <button class="copy-btn" id="copyAddress">
+                            <i class="far fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    
+                    <p><i class="fas fa-network-wired"></i> <strong>Network:</strong> Ethereum Mainnet</p>
+                    <p><i class="fas fa-info-circle"></i> The property NFT will be automatically transferred to your wallet after 3 confirmations.</p>
+                    
+                    <div class="gas-estimate">
+                        <div class="gas-label">Estimated Gas Fee:</div>
+                        <div class="gas-value">
+                            <span id="gasEstimate">0.0021 ETH</span>
+                            <span>~ $4.20</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="fiatDetails" class="payment-details">
+                    <h3 class="detail-title">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Fiat Payment Gateway</span>
+                    </h3>
+                    <p>For fiat payments, we partner with trusted payment processors to convert your currency to ETH at market rates.</p>
+                    
+                    <div style="margin: 20px 0; padding: 20px; background-color: #f5f5f5; border-radius: 8px; text-align: center;">
+                        <i class="fas fa-credit-card" style="font-size: 32px; color: var(--primary); margin-bottom: 10px;"></i>
+                        <h4 style="margin-bottom: 10px;">Coming Soon</h4>
+                        <p>We're currently working on integrating fiat payment options. Please check back later or use crypto payment.</p>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="cancelBtn" class="btn btn-outline">
+                        <i class="fas fa-times"></i>
+                        <span>Cancel</span>
+                    </button>{% set o_id = transfer[0]['agreement_id'] %}
+                    <button onclick="window.location.href='/transaction-success?o_id={{o_id }}'" class="btn btn-primary">
+                        <i class="fas fa-lock"></i>
+                        <span>Confirm Secure Payment</span>
+                    </button>
+                </div>
+                
+                <div id="statusMessage" class="status-message">
+                    <p id="statusText"></p>
+                    <a href="#" id="transactionLink" class="transaction-link" target="_blank" style="display: none;">
+                        <i class="fas fa-external-link-alt"></i>
+                        <span>View on Etherscan</span>
+                    </a>
+                </div>
+                
+                <div class="security-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Secure Blockchain Transaction • Encrypted Connection</span>
+                </div>
+                
+                <div class="terms">
+                    <p>By completing this purchase, you agree to Blockeste's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. Property ownership will be transferred via smart contract to your connected wallet address. All transactions are irreversible once confirmed on the blockchain.</p>
+                    <p style="margin-top: 10px;"><i class="fas fa-info-circle"></i> Please ensure you're connected to the correct network and double-check the recipient address before sending funds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script>
+        // DOM Elements
+        const connectWalletBtn = document.getElementById('connectWallet');
+        const walletAddress = document.getElementById('walletAddress');
+        const walletText = document.getElementById('walletText');
+        const networkIndicator = document.getElementById('networkIndicator');
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        const cryptoDetails = document.getElementById('cryptoDetails');
+        const fiatDetails = document.getElementById('fiatDetails');
+        //const confirmBtn = document.getElementById('confirmBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const statusText = document.getElementById('statusText');
+        const transactionLink = document.getElementById('transactionLink');
+        const copyAddressBtn = document.getElementById('copyAddress');
+        const contractAddressEl = document.getElementById('contractAddress');
+        const gasEstimateEl = document.getElementById('gasEstimate');
+        
+        // Contract details (replace with your actual contract)
+        const contractAddress = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
+        const contractABI = [
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "propertyId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "buyProperty",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "propertyId",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "getPropertyPrice",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "getEstimatedGas",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+        
+        let web3;
+        let accounts = [];
+        let contract;
+        let currentChainId = null;
+        let ethersProvider;
+        
+        // Initialize Web3
+        async function initWeb3() {
+            if (window.ethereum) {
+                try {
+                    // Request account access
+                    accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    
+                    // Create Web3 instance
+                    web3 = new Web3(window.ethereum);
+                    ethersProvider = new ethers.providers.Web3Provider(window.ethereum);
+                    
+                    // Get current chain ID
+                    currentChainId = await web3.eth.getChainId();
+                    updateNetworkIndicator(currentChainId);
+                    
+                    // Initialize contract
+                    contract = new web3.eth.Contract(contractABI, contractAddress);
+                    
+                    // Update UI
+                    updateWalletStatus();
+                    estimateGasFees();
+                    
+                    // Set up event listeners
+                    window.ethereum.on('accountsChanged', (newAccounts) => {
+                        accounts = newAccounts;
+                        updateWalletStatus();
+                    });
+                    
+                    window.ethereum.on('chainChanged', (chainId) => {
+                        currentChainId = parseInt(chainId, 16);
+                        updateNetworkIndicator(currentChainId);
+                        window.location.reload();
+                    });
+                    
+                } catch (error) {
+                    console.error("User denied account access:", error);
+                    showStatus('Wallet connection was denied. Please connect to proceed.', 'error');
+                }
+            } else {
+                showStatus('Please install MetaMask or another Ethereum wallet to use this feature!', 'error');
+                connectWalletBtn.disabled = true;
+            }
+        }
+        
+        // Update wallet connection status
+        function updateWalletStatus() {
+            if (accounts.length > 0) {
+                const shortenedAddress = `${accounts[0].substring(0, 6)}...${accounts[0].substring(38)}`;
+                walletText.textContent = shortenedAddress;
+                walletAddress.style.display = 'flex';
+                connectWalletBtn.innerHTML = '<i class="fas fa-check"></i><span>Connected</span>';
+                connectWalletBtn.style.backgroundColor = 'var(--success)';
+                confirmBtn.disabled = false;
+            } else {
+                walletAddress.style.display = 'none';
+                connectWalletBtn.innerHTML = '<i class="fas fa-plug"></i><span>Connect Wallet</span>';
+                connectWalletBtn.style.backgroundColor = 'var(--primary)';
+                confirmBtn.disabled = true;
+            }
+        }
+        
+        // Update network indicator
+        function updateNetworkIndicator(chainId) {
+            let networkName = 'Unknown';
+            let networkColor = 'var(--danger)';
+            
+            switch (chainId) {
+                case 1: // Ethereum Mainnet
+                    networkName = 'Ethereum';
+                    networkColor = 'var(--primary)';
+                    break;
+                case 5: // Goerli Testnet
+                    networkName = 'Goerli';
+                    networkColor = 'var(--secondary)';
+                    break;
+                case 11155111: // Sepolia Testnet
+                    networkName = 'Sepolia';
+                    networkColor = 'var(--warning)';
+                    break;
+                default:
+                    networkName = 'Unsupported';
+                    networkColor = 'var(--danger)';
+                    confirmBtn.disabled = true;
+                    showStatus(`Unsupported network. Please switch to Ethereum Mainnet.`, 'error');
+            }
+            
+            networkIndicator.innerHTML = `<i class="fas fa-link"></i> ${networkName}`;
+            networkIndicator.style.backgroundColor = networkColor;
+        }
+        
+        // Estimate gas fees
+        async function estimateGasFees() {
+            if (!contract || !accounts.length) return;
+            
+            try {
+                const propertyId = 1; // Replace with actual property ID
+                const gasPrice = await web3.eth.getGasPrice();
+                const gasEstimate = await contract.methods.buyProperty(propertyId).estimateGas({ from: accounts[0] });
+                
+                const totalGasWei = gasPrice * gasEstimate;
+                const totalGasEth = web3.utils.fromWei(totalGasWei.toString(), 'ether');
+                const gasEthShort = parseFloat(totalGasEth).toFixed(6);
+                
+                // Get current ETH price (simplified - in a real app you'd use an API)
+                const ethPrice = 2000; // This should come from an API like CoinGecko
+                const gasUsd = (parseFloat(gasEthShort) * ethPrice).toFixed(2);
+                
+                gasEstimateEl.textContent = `${gasEthShort} ETH`;
+                gasEstimateEl.nextElementSibling.textContent = `~ $${gasUsd}`;
+                
+            } catch (error) {
+                console.error("Error estimating gas:", error);
+                gasEstimateEl.textContent = "Error estimating";
+            }
+        }
+        
+        // Handle payment method selection
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                
+                const method = option.dataset.method;
+                cryptoDetails.classList.toggle('active', method === 'crypto');
+                fiatDetails.classList.toggle('active', method === 'fiat');
+                
+                if (method === 'crypto') {
+                    confirmBtn.innerHTML = '<i class="fas fa-lock"></i><span>Confirm Secure Payment</span>';
+                } else {
+                    confirmBtn.innerHTML = '<i class="fas fa-credit-card"></i><span>Continue to Payment</span>';
+                }
+            });
+        });
+        
+        // Handle copy address
+        copyAddressBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(contractAddressEl.textContent)
+                .then(() => {
+                    const originalText = copyAddressBtn.innerHTML;
+                    copyAddressBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        copyAddressBtn.innerHTML = originalText;
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Could not copy text: ', err);
+                });
+        });
+        
+        // Handle payment confirmation
+        confirmBtn.addEventListener('click', async () => {
+            if (accounts.length === 0) {
+                showStatus('Please connect your wallet first', 'error');
+                return;
+            }
+            
+            const selectedMethod = document.querySelector('.payment-option.selected').dataset.method;
+            
+            if (selectedMethod === 'crypto') {
+                try {
+                    confirmBtn.disabled = true;
+                    confirmBtn.innerHTML = '<span class="loading"></span> Processing Transaction...';
+                    
+                    const propertyId = 1; // Replace with actual property ID
+                    const priceWei = await contract.methods.getPropertyPrice(propertyId).call();
+                    const priceEth = web3.utils.fromWei(priceWei, 'ether');
+                    
+                    // Execute the transaction
+                    const tx = await contract.methods.buyProperty(propertyId).send({
+                        from: accounts[0],
+                        value: priceWei
+                    });
+                    
+                    // Show success message
+                    showStatus(`
+                        <i class="fas fa-check-circle"></i> Payment successful! 
+                        The property NFT is being transferred to your wallet.
+                    `, 'success');
+                    
+                    // Show transaction link
+                    const etherscanLink = `https://etherscan.io/tx/${tx.transactionHash}`;
+                    transactionLink.href = etherscanLink;
+                    transactionLink.style.display = 'inline-block';
+                    
+                    // Update button
+                    confirmBtn.innerHTML = '<i class="fas fa-check-circle"></i><span>Payment Completed</span>';
+                    confirmBtn.style.backgroundColor = 'var(--success)';
+                    
+                } catch (error) {
+                    console.error("Transaction failed:", error);
+                    
+                    let errorMessage = "Transaction failed";
+                    if (error.message.includes("rejected")) {
+                        errorMessage = "Transaction rejected by user";
+                    } else if (error.message.includes("insufficient funds")) {
+                        errorMessage = "Insufficient funds for transaction";
+                    } else if (error.message.includes("gas")) {
+                        errorMessage = "Gas estimation failed";
+                    }
+                    
+                    showStatus(`
+                        <i class="fas fa-exclamation-circle"></i> ${errorMessage}
+                    `, 'error');
+                    
+                    confirmBtn.disabled = false;
+                    confirmBtn.innerHTML = '<i class="fas fa-lock"></i><span>Confirm Secure Payment</span>';
+                }
+            } else {
+                showStatus(`
+                    <i class="fas fa-info-circle"></i> Fiat payments are coming soon! 
+                    Please use crypto payment for now.
+                `, 'warning');
+            }
+        });
+        
+        // Handle cancel button
+        cancelBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to cancel this transaction?')) {
+                window.location.href = '/properties';
+            }
+        });
+        
+        // Show status message
+        function showStatus(message, type) {
+            statusText.innerHTML = message;
+            statusMessage.className = 'status-message active ' + type;
+            
+            // Auto-hide success messages after 10 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusMessage.classList.remove('active');
+                }, 10000);
+            }
+        }
+        
+        // Initialize
+        connectWalletBtn.addEventListener('click', initWeb3);
+        confirmBtn.disabled = true;
+        
+        // Check if wallet is already connected
+        window.addEventListener('load', async () => {
+            if (window.ethereum && window.ethereum.selectedAddress) {
+                await initWeb3();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7; /* Light background */
+    color: #333; /* Dark text */
+    transition: background-color 0.3s, color 0.3s;
+}
+/* Header Styling */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode for Header */
+@media (prefers-color-scheme: dark) {
+    .header {
+        background-color: #222;
+        color: white;
+    }
+}
+
+/* Back Button Styling */
+.back-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.back-button:hover {
+    background-color: #45a049;
+}
+
+/* Theme Toggle Button */
+#themeToggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #28a745; /* Green button */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+#themeToggle:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+/* Interests Container */
+.interests-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff; /* White container */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Property Section */
+.property-section {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.property-image {
+    flex: 1;
+    max-width: 50%;
+}
+
+.property-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.property-details {
+    flex: 1;
+}
+
+.property-details h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #28a745; /* Green heading */
+}
+
+.property-details p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.property-details strong {
+    color: #28a745; /* Green for strong text */
+}
+
+/* Interests List */
+.interests-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.interests-list h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #28a745; /* Green heading */
+}
+
+/* Interest Card */
+.interest-card {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f7f7f7; /* Light gray background */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.buyer-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.buyer-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 20px;
+    object-fit: cover;
+}
+
+.buyer-text p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 5px 0;
+}
+
+.buyer-text strong {
+    color: #28a745; /* Green for strong text */
+}
+
+.interest-details p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 5px 0;
+}
+
+.interest-details strong {
+    color: #28a745; /* Green for strong text */
+}
+
+.interest-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.interest-actions button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.interest-actions .accept-btn {
+    background-color: #28a745; /* Green button */
+    color: #fff;
+}
+
+.interest-actions .accept-btn:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.interest-actions .reject-btn {
+    background-color: #dc3545; /* Red button */
+    color: #fff;
+}
+
+.interest-actions .reject-btn:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+
+/* Dark Theme Styles */
+body.dark-theme {
+    background-color: #1e1e1e; /* Dark background */
+    color: #fff; /* Light text */
+}
+
+body.dark-theme .interests-container {
+    background-color: #2c2c2c; /* Dark container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Dark shadow */
+}
+
+body.dark-theme .interest-card {
+    background-color: #333; /* Dark gray background */
+}
+
+body.dark-theme .buyer-text p,
+body.dark-theme .interest-details p {
+    color: #fff; /* Light text */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .property-section {
+        flex-direction: column; /* Stack image and details vertically */
+    }
+
+    .property-image {
+        max-width: 100%; /* Full width for image */
+    }
+
+    .interests-container {
+        padding: 15px;
+    }
+
+    .interest-card {
+        padding: 15px;
+    }
+
+    .buyer-text p,
+    .interest-details p {
+        font-size: 14px; /* Smaller text for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .buyer-image {
+        width: 50px;
+        height: 50px; /* Smaller buyer image */
+    }
+
+    .buyer-text p,
+    .interest-details p {
+        font-size: 12px; /* Smaller text for very small screens */
+    }
+
+    .interest-actions button {
+        font-size: 14px; /* Smaller button text */
+    }
+}

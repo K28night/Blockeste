@@ -1,0 +1,175 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #e0f7fa, #c8e6c9);
+    color: #2e7d32;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+/* Header Section */
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: #1b5e20;
+}
+
+header p {
+    margin: 0.5rem 0;
+    color: #388e3c;
+}
+
+#eth-price {
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    color: #2e7d32;
+}
+
+/* Conversion Form */
+form {
+    margin: 1.5rem 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #2e7d32;
+}
+
+input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #c8e6c9;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #f1f8e9;
+    color: #2e7d32;
+}
+
+button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #388e3c;
+}
+
+/* Result Section */
+#result {
+    margin-top: 1.5rem;
+}
+
+#eth-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1b5e20;
+}
+
+/* Payment Instructions Section */
+#payment-instructions {
+    margin-top: 2rem;
+    text-align: left;
+}
+
+#payment-instructions h2 {
+    font-size: 1.5rem;
+    color: #1b5e20;
+    margin-bottom: 1rem;
+}
+
+#payment-instructions ol {
+    padding-left: 1.5rem;
+}
+
+#payment-instructions li {
+    margin-bottom: 0.75rem;
+    color: #2e7d32;
+}
+
+#payment-instructions code {
+    background-color: #f1f8e9;
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+    font-family: monospace;
+    color: #1b5e20;
+}
+
+#payment-instructions a {
+    color: #4caf50;
+    text-decoration: none;
+}
+
+#payment-instructions a:hover {
+    text-decoration: underline;
+}
+
+/* Footer Section */
+footer {
+    margin-top: 2rem;
+    font-size: 0.875rem;
+    color: #388e3c;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        padding: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    header p {
+        font-size: 0.9rem;
+    }
+
+    #eth-price {
+        font-size: 1rem;
+    }
+
+    input {
+        padding: 0.5rem;
+    }
+
+    button {
+        padding: 0.5rem 1rem;
+    }
+
+    #eth-amount {
+        font-size: 1.25rem;
+    }
+
+    #payment-instructions h2 {
+        font-size: 1.25rem;
+    }
+
+    #payment-instructions li {
+        font-size: 0.9rem;
+    }
+}

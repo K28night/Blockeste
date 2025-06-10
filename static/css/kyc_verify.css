@@ -1,0 +1,150 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+.header {
+    background: #209005;
+    padding: 12px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 99%;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.header-title {
+    font-weight: bold;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 2rem;
+    margin-right: 6rem;
+}
+
+.btn-header {
+    background: white;
+    color: #209005;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    border: none;
+}
+
+.btn-header:hover {
+    background: #f2f2f2;
+}
+#logout:hover{
+    background: #e71f1f;
+    color: #ffffff;
+}
+#profile:hover{
+    background-color: #52c239;
+    color: #ffffff;
+}
+
+/* Main container */
+.container {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
+    width:60rem;
+    text-align: center;
+    margin: 100px auto;
+}
+
+h2 {
+    color: #209005;
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-top: 12px;
+    text-align: left;
+    font-size: 14px;
+}
+
+input, textarea {
+    width: 30em;
+    padding: 10px;
+    margin-top: 5px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: #209005;
+    outline: none;
+    box-shadow: 0 0 5px rgba(32, 144, 5, 0.3);
+}
+small{
+display: flex;
+padding: 1rem;
+}
+.error {
+    color: red;
+    font-size: 12px;
+    text-align: left;
+    margin-top: 5px;
+}
+
+canvas {
+    border: 2px dashed #209005;
+    border-radius: 10px;
+    background-color: white;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.btn {
+    background: #209005;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    width: 100%;
+    transition: 0.3s;
+    margin-top: 15px;
+}
+
+.btn:hover {
+    background: #176c04;
+}
+
+.clear-btn {
+    background: #ff4b4b;
+    width: auto;
+    color:white;
+    letter-spacing: 1px;
+    font-weight: 300;
+    padding: 10px 15px;
+    margin-top: 5px;
+}
+
+.clear-btn:hover {
+    background: #c0392b;
+}
+
+
+

@@ -1,0 +1,495 @@
+/* Styling for headings */
+
+.h1 {
+    color: #ffffff;
+    letter-spacing: 4px;
+   font-size:4.6rem;
+   padding:30px;
+
+}
+
+/* Page background */
+body {
+    background-color: #09261d;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Link styles */
+a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+}
+.list>*{
+    padding: 10px;
+   letter-spacing: 1px;
+}
+.list>*:hover{
+    color:orange;
+}
+a span {
+    padding: 10px;
+}
+
+/* Logo styling */
+.logo {
+    display: flex;
+    width: 200px;
+    font-size: 26px;
+    letter-spacing: 3px;
+    align-items: center;
+}
+#select{
+    background: none;
+    color: #ffffff;
+    font-size: 18px;
+    border:none;
+    padding: 7px;
+    padding: 10px;
+}
+.logoimg {
+    margin-right: 10px;
+    
+}
+.login{
+    margin-top: 15px;
+    font-size: 19px;
+    border-radius: 2rem;
+    height: 50px;
+    width: 160px;
+    border-color:#ffffff;
+    border-width:1px;
+    background: none;
+    color:#ffffff;
+    transition: background-color 0.4s, transform 0.5s;
+}
+.login:hover{
+    color:#09261d;
+    background-color: #ffffff;
+}
+.tab{
+   display:none;/* Hidden by default */
+     position: fixed;
+     z-index: 10;
+     left: 0;
+     top: 0;
+     width: 100%;
+     height: 100%;
+     overflow: hidden;
+     background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+     justify-content: center;
+     align-items: center;
+ }
+ 
+ .tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+
+  .form {
+    display: none;
+ 
+  }
+
+  .form.active {
+    display: block;
+  }
+.login-panal{
+    /* Hidden by default */
+    position: fixed;
+    z-index: 10;
+    left: 37%;
+    top: 23%;
+    width: 25rem;
+    outline: none;
+    height:24rem;
+    background-color: #f6f8fa;
+    border-radius: 30px;
+    border: thin solid #09261d;
+    color: #09261d;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.login-panal p{/*message*/
+margin-left: 2rem;
+}
+
+.danger{
+    color: red;
+}
+
+.success{
+    color: green;
+}
+.login-panal input{
+    margin-left: 3rem;
+    height:2rem;
+    text-indent: 1rem; 
+    width:18rem;
+    border: 0.5px solid #09261d;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 2rem;
+}
+.login-panal button[type="submit"]{
+    width: 6rem;
+    height: 3rem;
+    border:2px solid #ff6314;
+    border-radius:18px;
+    letter-spacing: 1px;
+    font-size: 16px;
+    margin-left: 8.5rem;
+    transition: background-color 0.4s, transform 0.5s;
+}
+#loginTab,#registerTab  {
+    padding: 10px;
+    cursor: pointer;
+  margin: 2rem 0 0.5rem;
+  width: 32%;
+  height: 10%;
+    border-radius:18px;
+    letter-spacing: 1px;
+    font-size: 16px;
+    transition: background-color 0.4s, transform 0.5s;
+    border: 1px solid #ff6314;
+    background-color: #ffffff;
+     color: #1f1414 ;
+    font-weight: bold;
+  }
+  #loginTab{  margin-left: 2rem;}
+ #loginTab.active {
+    background-color: #ff6314;
+    color: #131212; 
+  }
+  
+  #registerTab.active {
+    background-color: #ff6314;
+    color: #131212; 
+  }
+.login-panal button:hover{
+background-color: #ff6314;
+color:#ffffff
+}
+.login::after .login-panel{
+    display: flex;
+}
+
+.loginForm.act{
+    margin-top:3rem;
+}
+
+#loginForm input{
+    padding: 2%;
+    margin-top: 0.6rem;
+}
+
+
+#registerForm input{
+    margin-bottom:1rem;
+   
+}
+/* Header and navigation */
+header {
+    background-color: #09261d;
+    padding: 10px 20px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    margin-left: 15px;
+}
+
+.hero-section {
+    background-color: #e3f2fd;
+    padding: 50px 20px;
+    text-align: center;
+}
+.first-section{
+    height: 36.67rem;
+}
+.properties{
+    margin-top: -18px;
+    font-size: 19px;
+    border-radius: 2.2rem;
+    height: 50px;
+    width: 210px;
+    margin-left:2rem;
+    border-color:#ffffff;
+    border-width:1px;
+    background: none;
+    color:#ffffff;
+    transition: background-color 0.4s, transform 0.5s;
+}
+.properties:hover{
+    color:#09261d;
+    background-color: #ffffff;
+}
+.house{
+    margin-right:20px;
+    width:38%;
+    float:right;
+}
+.search {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    margin-top: 6rem;
+    margin-left: 1.5rem;
+    width: 96%;
+    border-radius: 24px;
+    height: 9rem;
+    box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    z-index: 100;
+}
+.search-form{
+    display: flex;
+    flex-direction: row;
+    margin: 2rem;
+    width:45%;
+    height: 5rem;
+    border-radius: 30px;
+    border: 1px solid #05140a7e;
+}
+
+.fa-magnifying-glass{
+    margin-left: -12rem;
+}
+.search button {
+    background-color: #ff6314;
+    color: white;
+    margin:10px;
+    width: 7rem;
+    height:3.7rem;
+    padding: 12px 12px;
+    border-radius: 24px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.search input{
+    border:none;
+    margin-left: 2rem;
+    width:70%;
+    font-size:20px;
+    outline:none;
+}
+.search button:hover {
+    background-color: #e65106f7;
+}
+.lists{
+    display: flex;
+    flex-direction: row;
+gap: 1rem;
+}
+.lists>*{
+    width: 11.5rem;
+    border-radius: 20em;
+ font-size: 18px;
+    border: thin solid #02130e7e;
+cursor: pointer;
+}
+.lists p{
+    margin-left: 1rem;
+}
+.lists p span{
+    margin-bottom: 1rem;
+    margin-left: 0.2em;
+
+}
+p img{
+    margin-bottom: -5px;
+margin-left: 9px;
+}
+.proper img{
+    margin-left: 6px;
+}
+.location img{
+    margin-left: 12px;
+}
+.types img{
+    margin-left: 16px;
+}
+.proper {
+    position: relative; /* Ensures the dropdown positions relative to this */ 
+    cursor: pointer;
+}
+.toggle {
+    display: grid; /* Initially hidden */
+    grid-row-gap:4px;
+    grid-column-gap:4px;
+    position: absolute;
+    top: 133%; /* Places it directly below the button */
+    left: 51%;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 10rem;
+    z-index: 1000;
+    display:none;
+}
+
+.toggle a {
+    display: block;
+    color: #09261d;
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color .3s linear, color .3s linear;
+}
+
+.toggle a:hover {
+    background: #ff6314;
+    color: #fff;
+    
+}
+
+/* Show dropdown when hovering */
+.proper:hover .toggle,
+.proper:focus-within .toggle {  /* Keeps menu open if interacting */
+    display: block;
+}
+#loc{
+    left: 67%;
+}
+#type{
+    left:82.4%;
+}
+/* .button {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+} */
+
+.listed-propeerty {
+    position: absolute;
+    z-index: -1; /* Ensure it's above the background but below other elements */
+    height: 55rem;
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.listed-propeerty h2 {
+    position: relative;
+    font-size: 70px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300; /* 'lighter' may not work in all cases */
+    padding: 2rem;
+    width: 50%;
+    margin-top: 10rem;
+}
+.prop-heading{
+    display: flex;
+}
+.list-button {
+    z-index: 100;
+    font-family: 'Poppins', sans-serif;
+    width: 11rem; /* Increased width for better visibility */
+    height: 3.2rem; /* Slightly larger for better UI */
+    background-color: #ffffff;
+    color: #ff6314;
+    border: 1px solid #ff6314;
+    border-radius: 3rem;
+    cursor: pointer;
+    transition: background-color .3s linear, color .3s linear;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 14rem 2rem 0 19rem;
+}
+
+.list-button:hover {
+    background-color: #ff6314; /* Lighter green on hover */
+    color: #ffffff;
+    border: none;
+}
+.pro-list {
+   display: flex;
+   width: 98%;
+   height: 21rem;
+    gap: 1.4rem; /* Adjust spacing between elements */
+    margin-left: 1.5rem;
+}
+.elements {
+    text-align: center; 
+
+        position: relative;
+        display: inline-block;
+}
+.pro-list p{
+    margin:8px;
+    font-family: 'Poppins', sans-serif;
+}
+.type{
+    position: relative;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ff6214cc;
+    color: #fffefe;
+    width: 15%;
+    height: 7%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ p span{
+margin-left: 8rem;}
+.address{
+font-size: 18px;
+font-family: 'Urbanist', sans-serif;
+}
+.name{
+    font-size: 24px;
+}
+.image-list{
+border-radius: 13px;
+width:390px;
+height: 300px;
+}
+
+/* about*/
+
+.about{
+    position: absolute;
+    display: flex;
+   z-index: 100;
+   margin-top: 15rem;
+   margin-left: 2rem;
+   font-family: 'Poppins', sans-serif;
+   flex-direction: row;
+    color: #ffffff;
+    font-size: 18px;
+    background-color: #09261d;
+    height: 45rem;
+}
+.about img{
+    margin-top: 4rem;
+   height: 600px;
+    width: 600px;
+}
+.about-list{ 
+    margin-left: 6rem;
+}
+.h5{
+    font-size:3rem;
+    margin: 3px;
+}
+.head{
+    font-weight:300px;
+    font-size: 27px;
+}
+.head svg{
+    
+    width: 2.3rem;
+}
